@@ -8,6 +8,7 @@
 
 # NetBeans Specific#
 nbproject/private/
+nbproject/private/private.properties
 build/
 nbbuild/
 dist/
