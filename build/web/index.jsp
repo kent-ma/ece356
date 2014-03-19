@@ -7,15 +7,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ECE 356 - Lab 1</title>
+        <title>JSP Page</title>
     </head>
-    <body>
-        <h1>Lab 1 Application</h1>
-        <ul>
-            <li><a href="user_data_form.jsp">Exercise 2 - Enter, save and display info</a></li>
-            <li><a href="DBTestServlet">Exercise 3 - Connect to the database</a></li>
-        </ul>
+    <body bgcolor="#E6E6FA">
+    <img src="Resources/horsepital_banner.jpg" height="90" width="720">
+    <form method="post" action="UserDataServlet">
+        Login ID: <input type="text" name="userId"><br>
+        Password: <input type="text" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+    
+    <a href="doctor.jsp">Doctor</a><n/>
+    <a href="financial.jsp">Financial</a>
     </body>
+</html>
+
 </html>
