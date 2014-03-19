@@ -9,14 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Grant Patient Record Access to Doctors </title>
+        <title>Grant Patient Record Access to Other Doctors </title>
     </head>
     <body>
-        <jsp:useBean id="userData" class="ece356.UserData" scope="session"/>
-        <b>Logged In As: </b><%out.print(userData.getUserName());%> <br> 
-        <b>Role In Hospital: </b><%out.print(userData.getUserName());%>         
+        <jsp:useBean id="Doctor" class="ece356.Members.Doctor" scope="session"/>
+        Hello Dr.<%= Doctor.getName() %><br/>         
         Doctor:<input type="text" name="DoctorID">
-        Patient:<input type="text" name="PatientID">
-        <input type="submit" value="Grant Access">
+        
+        <input type="grant" value="Grant Access">
     </body>
 </html>
