@@ -7,6 +7,14 @@
 /dist/
 
 # NetBeans Specific#
+/nbproject/private/
+/nbproject/private/private.properties
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+
+nbproject/private/*
 nbproject/private/
 nbproject/private/private.properties
 build/
