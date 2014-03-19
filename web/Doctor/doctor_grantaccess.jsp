@@ -13,8 +13,8 @@
     </head>
     <body>
         <jsp:useBean id="Doctor" class="ece356.Members.Doctor" scope="session"/>
-        Hello Dr.<%= Doctor.getName() %><br/>         
-        Doctor:<input type="text" name="DoctorID">
+        Hello Dr.<%= Doctor.getName() %><br/>   
+        Granting my patient access to Dr.<input type="text" name="DoctorID">
         
         <input type="grant" value="Grant Access">
     </body>
