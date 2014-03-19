@@ -11,10 +11,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login into HORSEPITAL</title>
     </head>
-    <header><h1>User Data Form</h1></header>
+    <header><h1>Login</h1></header>
     <form method="POST" action="UserDataServlet">
-        <input type ="text" name="_username">
-        <input type="password" name="_password">
-        <input type="submit" value="Submit Query">
+        <br/>Username:<input type ="text" name="_username">
+        <br/>Password:<input type="password" name="_password">
+        <br/><input type="submit" value="Submit">
     </form>
 </html>
