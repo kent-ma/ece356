@@ -5,3 +5,13 @@
 *.war
 *.ear
 /dist/
+
+# NetBeans Specific#
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configurations.xml
+
