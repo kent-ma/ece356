@@ -15,3 +15,5 @@ nbdist/
 nbactions.xml
 nb-configurations.xml
 
+# OSX GARBAGE #
+*.DS_STORE
