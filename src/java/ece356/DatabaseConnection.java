@@ -43,7 +43,7 @@ public class DatabaseConnection
         if (c == null)
             sql += ";";
         else
-            sql += " where " + c;
+            sql += " where " + c + ";";
         
         return stmt.executeQuery(sql);
     }
