@@ -6,9 +6,6 @@
 
 package ece356;
 
-import static ece356.UserDBAO.pwd;
-import static ece356.UserDBAO.url;
-import static ece356.UserDBAO.user;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
