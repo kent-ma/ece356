@@ -19,7 +19,6 @@ public class DatabaseConnection
     public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
     public static final String user = "user_dwbinnie";
     public static final String pwd = "user_dwbinnie";
-    public static final String db = "4a1w";
     
     Statement stmt;
     Connection con;
@@ -28,42 +27,17 @@ public class DatabaseConnection
     {
         Class.forName("com.mysql.jdbc.Driver");
         con = (Connection) DriverManager.getConnection(url, user, pwd);
-        con.setSchema(db);
         stmt = (Statement) con.createStatement();
     }
     
-    public ResultSet selectRows(String t, String r, String c) throws SQLException
+    public ResultSet getTimeDiff() throws SQLException
     {
-        String sql = "SELECT ";
-        
-        if (r == null)
-            sql += "* from " + t;
-        else
-            sql += r + " from " + t;
-        
-        if (c == null)
-            sql += ";";
-        else
-            sql += " where " + c;
-        
-        return stmt.executeQuery(sql);
+        return stmt.executeQuery("SELECT TIMEDIFF(DepartTime, ArrivalTime) from Visit;");
     }
     
-    public boolean insertRows(String t, String cl, String v) throws SQLException
+    public ResultSet getUserName(String user, String pass) throws SQLException
     {
-        String sql = "INSERT INTO " + t + "(" + cl + ") VALUES(" + v + ");";
-        return stmt.execute(sql);
-    }
-    
-    public boolean updateRows(String t, String v, String c) throws SQLException
-    {
-        String sql = "UPDATE " + t + " SET " + v + " WHERE " + c;
-        return stmt.execute(sql);
-    }
-    
-    public void close() throws SQLException
-    {
-        con.close();
+        return stmt.executeQuery("Select * from 4a1w.Login where Name = '" + user + "' and Password = '" + pass + "';");
     }
             
 }
