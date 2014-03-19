@@ -5,6 +5,8 @@ build/
 #netbeans specific
 core
 nbproject/*
+nbproject/ant-deploy.xml
+nbproject/private/private.properties
 !nbproject/project.properties
 !nbproject/project.xml
  
