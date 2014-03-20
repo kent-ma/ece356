@@ -8,10 +8,7 @@ package ece356;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,23 +31,14 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/4a1w";
-    public static final String user = "user_k27ma";
-    public static final String pwd = "user_k27ma";
-    
-    Statement stmt;
-    Connection con;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
-        
-        
+            throws ServletException, IOException {
         String query = "";
         
         
         String url;
         try {
-            initializeConnection();
+            DatabaseConnection dbcon = new DatabaseConnection();
             url = "/dbtest.jsp";
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,18 +50,45 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("exception", ex);
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        getServletContext().getRequestDispatcher(url).forward(request, response);
     }
-    
-    public static void initializeConnection()
-            throws ClassNotFoundException, SQLException {
-        Statement stmt;
-        Connection con;
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(url, user, pwd);
-        stmt = con.createStatement();
-        con.close();
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }
