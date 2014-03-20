@@ -8,6 +8,7 @@ package ece356;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +36,14 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String query = "";
         
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
         
         String url;
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
+            ResultSet rs = dbcon.selectRows("Login", null, "name = " + name + " AND " + "password = " + password);
+            int loginId = rs.getInt("loginId");
             url = "/dbtest.jsp";
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);

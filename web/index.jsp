@@ -15,7 +15,7 @@
     <body bgcolor="#E6E6FA">
     <img src="Resources/horsepital_banner.jpg" height="90" width="720">
     <form method="post" action="LoginServlet">
-        Login ID: <input type="text" name="userId"><br>
+        Login ID: <input type="text" name="name"><br>
         Password: <input type="text" name="password"><br>
         <input type="submit" value="Login">
     </form>
