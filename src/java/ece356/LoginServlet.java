@@ -42,7 +42,8 @@ public class LoginServlet extends HttpServlet {
         String url;
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
-            ResultSet rs = dbcon.selectRows("Login", null, "name = " + name + " AND " + "password = " + password);
+            ResultSet rs = dbcon.selectRows("Login", null, "name = '" + name + "' AND " + "password = '" + password + "'");
+            rs.next();
             int loginId = rs.getInt("loginId");
             url = "/dbtest.jsp";
         } catch (ClassNotFoundException ex) {
