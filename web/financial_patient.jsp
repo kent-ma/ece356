@@ -16,7 +16,7 @@
         <form method="post" action="FinancialPatientServlet">
             Start Time: <input type="text" name="start_time"><br>
             End Time: <input type="text" name="end_time"><br>
-            Patient Name: <input type="text" name="patientname"><br>
+            Patient ID: <input type="text" name="patient_id"><br>
             
             <input type="submit" value="Search">
         </form>

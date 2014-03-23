@@ -6,11 +6,15 @@ package ece356;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.sql.Timestamp;
+import ece356.Members.Visit;
 
 /**
  *
@@ -32,20 +36,53 @@ public class FinancialPatientServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        
+        String query = "";
+        String url = "";
+        String startTime = request.getParameter("start_time");
+        String endTime = request.getParameter("end_time");
+        String patientID = request.getParameter("patient_id");
+        
+        ArrayList<Integer> apptID = new ArrayList<Integer>();
+        ArrayList<Visit> visits = new ArrayList<Visit>();
+        
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialPatientServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialPatientServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+            // Get database connection.
+            DatabaseConnection dbcon = new DatabaseConnection();
+            
+            // Retrieve appointments by patient id. 
+            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = "+patientID);
+            while (appt.next()) {
+                apptID.add(appt.getInt("ApptID"));
+            }
+            
+            // Retrieve records using ApptID.
+            for (int a : apptID) {
+                ResultSet visit = dbcon.selectRows("Visit", null, "ApptID = "+a);
+                visit.next();
+                // TODO create a Visit object and store the object into a list.
+                int vApptID = visit.getInt("ApptID");
+                Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
+                Timestamp vDepartTime = visit.getTimestamp("DepartTime");
+                String vProcedure = visit.getString("Procedure");
+                String vResult = visit.getString("Result"); 
+                String vPrescription = visit.getString("Prescription");
+                String vComment = visit.getString("Comment");
+                Timestamp vAuditTime = visit.getTimestamp("AuditTime");
+                int vAuditByID = visit.getInt("AuditByID");
+                
+                Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
+                                      vPrescription, vComment, vAuditTime, vAuditByID);
+                
+                visits.add(v);
+            }
+            
+            // TODO Display the visitation records on a table. 
+        } catch (Exception ex) {
+            request.setAttribute("exception", ex);
+            url = "/error.jsp";
+        } finally {
+            getServletContext().getRequestDispatcher(url).forward(request, response);
         }
     }
 
