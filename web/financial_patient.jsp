@@ -20,20 +20,5 @@
             
             <input type="submit" value="Search">
         </form>
-        
-        <br/>
-        <br/>
-        <table border="1" style="width:300px">
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-        </table>
     </body>
 </html>

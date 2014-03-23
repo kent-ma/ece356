@@ -77,12 +77,12 @@ public class FinancialPatientServlet extends HttpServlet {
                 visits.add(v);
             }
             
-            // TODO Display the visitation records on a table. 
+            // Display the visitation records on a table.
+            request.getSession().setAttribute("visits", visits);
+            getServletContext().getRequestDispatcher("/financial_patient_table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
             url = "/error.jsp";
-        } finally {
-            getServletContext().getRequestDispatcher(url).forward(request, response);
         }
     }
 
