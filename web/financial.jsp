@@ -12,29 +12,7 @@
         <title>Financial Department</title>
     </head>
     <body>
-        <h3>Search Visitation Records</h3>
-        <form method="post" action="FinanicalDepartmentServlet">
-            Start Time: <input type="text" name="start_time"><br>
-            End Time: <input type="text" name="end_time"><br>
-            Doctor Name: <input type="text" name="doctorname"><br>
-            Patient Name: <input type="text" name="patientname"><br>
-            
-            <input type="submit" value="Search">
-        </form>
-        
-        <br/>
-        <br/>
-        <table border="1" style="width:300px">
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-        </table>
+        <a href="financial_patient.jsp">Access Records by Patient ID</a>
+        <a href="financial_doctor.jsp">Access Records by Doctor ID</a>
     </body>
 </html>

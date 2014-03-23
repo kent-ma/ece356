@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author cynthiachoi
  */
-@WebServlet(name = "FinanicalDepartmentServlet", urlPatterns = {"/FinanicalDepartmentServlet"})
-public class FinanicalDepartmentServlet extends HttpServlet {
+@WebServlet(name = "FinancialPatientServlet", urlPatterns = {"/FinancialPatientServlet"})
+public class FinancialPatientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,10 +38,10 @@ public class FinanicalDepartmentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FinanicalDepartmentServlet</title>");            
+            out.println("<title>Servlet FinancialPatientServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet FinanicalDepartmentServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FinancialPatientServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
