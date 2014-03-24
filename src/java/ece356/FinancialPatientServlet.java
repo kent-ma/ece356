@@ -5,7 +5,6 @@
 package ece356;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,11 +36,23 @@ public class FinancialPatientServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String query = "";
-        String url = "";
-        String startTime = request.getParameter("start_time");
-        String endTime = request.getParameter("end_time");
+        String startYear = request.getParameter("start_year");
+        String startMonth = request.getParameter("start_month");
+        String startDay = request.getParameter("start_day");
+        String endYear = request.getParameter("end_year");
+        String endMonth = request.getParameter("end_month");
+        String endDay = request.getParameter("end_day");
         String patientID = request.getParameter("patient_id");
+        
+        String startTime = "";
+        String endTime = "";
+        
+        if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
+                !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
+            
+            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+"'";
+            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
+        }
         
         ArrayList<Integer> apptID = new ArrayList<Integer>();
         ArrayList<Visit> visits = new ArrayList<Visit>();
@@ -58,9 +69,16 @@ public class FinancialPatientServlet extends HttpServlet {
             
             // Retrieve records using ApptID.
             for (int a : apptID) {
-                ResultSet visit = dbcon.selectRows("Visit", null, "ApptID = "+a);
+                ResultSet visit;
+                if (startTime.equals("") || endTime.equals("")) {
+                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a);
+                } else {
+                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a+
+                        " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
+                }
                 visit.next();
-                // TODO create a Visit object and store the object into a list.
+                
+                // Create a Visit object and store the object into a list.
                 int vApptID = visit.getInt("ApptID");
                 Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
                 Timestamp vDepartTime = visit.getTimestamp("DepartTime");
@@ -82,7 +100,7 @@ public class FinancialPatientServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/financial_patient_table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
-            url = "/error.jsp";
+            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

@@ -16,7 +16,7 @@
     </head>
     <body>
         <%--Retrieve visits from servlet--%>
-        <table border="1" style="width:300px">
+        <table border="1" style="width:600px">
         <%
             ArrayList<Visit> visits = (ArrayList<Visit>)request.getAttribute("visits");
             
