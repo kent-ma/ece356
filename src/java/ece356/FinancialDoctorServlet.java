@@ -4,8 +4,12 @@
  */
 package ece356;
 
+import ece356.Members.Visit;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,20 +36,72 @@ public class FinancialDoctorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        
+                String startYear = request.getParameter("start_year");
+        String startMonth = request.getParameter("start_month");
+        String startDay = request.getParameter("start_day");
+        String endYear = request.getParameter("end_year");
+        String endMonth = request.getParameter("end_month");
+        String endDay = request.getParameter("end_day");
+        String doctorID = request.getParameter("doctor_id");
+        
+        String startTime = "";
+        String endTime = "";
+        
+        if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
+                !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
+            
+            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+"'";
+            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
+        }
+        
+        ArrayList<Integer> apptID = new ArrayList<Integer>();
+        ArrayList<Visit> visits = new ArrayList<Visit>();
+        
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialDoctorServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialDoctorServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+            // Get database connection.
+            DatabaseConnection dbcon = new DatabaseConnection();
+            
+            // Retrieve appointments by patient id. 
+            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "DoctorID = "+doctorID);
+            while (appt.next()) {
+                apptID.add(appt.getInt("ApptID"));
+            }
+            
+            // Retrieve records using ApptID.
+            for (int a : apptID) {
+                ResultSet visit;
+                if (startTime.equals("") || endTime.equals("")) {
+                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a);
+                } else {
+                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a+
+                        " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
+                }
+                visit.next();
+                
+                // Create a Visit object and store the object into a list.
+                int vApptID = visit.getInt("ApptID");
+                Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
+                Timestamp vDepartTime = visit.getTimestamp("DepartTime");
+                String vProcedure = visit.getString("Procedure");
+                String vResult = visit.getString("Result"); 
+                String vPrescription = visit.getString("Prescription");
+                String vComment = visit.getString("Comment");
+                Timestamp vAuditTime = visit.getTimestamp("AuditTime");
+                int vAuditByID = visit.getInt("AuditByID");
+                
+                Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
+                                      vPrescription, vComment, vAuditTime, vAuditByID);
+                
+                visits.add(v);
+            }
+            
+            // Display the visitation records on a table.
+            request.getSession().setAttribute("visits", visits);
+            getServletContext().getRequestDispatcher("/financial_table.jsp").forward(request, response);
+        } catch (Exception ex) {
+            request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

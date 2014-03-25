@@ -1,6 +1,6 @@
 <%-- 
-    Document   : financial_patient_table
-    Created on : Mar 23, 2014, 6:06:56 PM
+    Document   : financial_doctor_table
+    Created on : Mar 24, 2014, 9:06:09 PM
     Author     : cynthiachoi
 --%>
 
@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Visitation Records</title>
     </head>
     <body>
         <%--Retrieve visits from servlet--%>

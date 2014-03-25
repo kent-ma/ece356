@@ -14,26 +14,23 @@
     <body>
         <h3>Search Visitation Records</h3>
         <form method="post" action="FinancialDoctorServlet">
-            Start Time: <input type="text" name="start_time"><br>
-            End Time: <input type="text" name="end_time"><br>
-            Doctor Name: <input type="text" name="doctorname"><br>
+            Start Date: 
+            <br/>
+            Year: <input type="text" name="start_year">
+            Month: <input type="text" name="start_month">
+            Day: <input type="text" name="start_day">
+            <br/>
+            <br/>
+            End Date: 
+            <br/>
+            Year: <input type="text" name="end_year">
+            Month: <input type="text" name="end_month">
+            Day: <input type="text" name="end_day">
+            <br/>
+            <br/>
+            Doctor ID: <input type="text" name="doctor_id"><br>
             
             <input type="submit" value="Search">
         </form>
-        
-        <br/>
-        <br/>
-        <table border="1" style="width:300px">
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-            <tr>
-                <td>test1</td>
-                <td>test2</td>
-                <td>test3</td>
-            </tr>
-        </table>
     </body>
 </html>
