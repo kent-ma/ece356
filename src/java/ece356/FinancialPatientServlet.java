@@ -76,23 +76,24 @@ public class FinancialPatientServlet extends HttpServlet {
                     visit = dbcon.selectRows("Visit", null, "ApptID = "+a+
                         " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
                 }
-                visit.next();
                 
-                // Create a Visit object and store the object into a list.
-                int vApptID = visit.getInt("ApptID");
-                Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
-                Timestamp vDepartTime = visit.getTimestamp("DepartTime");
-                String vProcedure = visit.getString("Procedure");
-                String vResult = visit.getString("Result"); 
-                String vPrescription = visit.getString("Prescription");
-                String vComment = visit.getString("Comment");
-                Timestamp vAuditTime = visit.getTimestamp("AuditTime");
-                int vAuditByID = visit.getInt("AuditByID");
-                
-                Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
-                                      vPrescription, vComment, vAuditTime, vAuditByID);
-                
-                visits.add(v);
+                if (visit.next()) {
+                    // Create a Visit object and store the object into a list.
+                    int vApptID = visit.getInt("ApptID");
+                    Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
+                    Timestamp vDepartTime = visit.getTimestamp("DepartTime");
+                    String vProcedure = visit.getString("V_Procedure");
+                    String vResult = visit.getString("Result"); 
+                    String vPrescription = visit.getString("Prescription");
+                    String vComment = visit.getString("V_Comment");
+                    Timestamp vAuditTime = visit.getTimestamp("AuditTime");
+                    int vAuditByID = visit.getInt("AuditByID");
+
+                    Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
+                                          vPrescription, vComment, vAuditTime, vAuditByID);
+
+                    visits.add(v);
+                }
             }
             
             // Display the visitation records on a table.
