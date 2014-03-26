@@ -18,7 +18,7 @@
         <%--Retrieve visits from servlet--%>
         <table border="1" style="width:600px">
         <%
-            ArrayList<Visit> visits = (ArrayList<Visit>)request.getAttribute("visits");
+            ArrayList<Visit> visits = (ArrayList<Visit>)session.getAttribute("visits");
             
             for (Visit v : visits) {
                 %>
