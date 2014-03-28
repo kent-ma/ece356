@@ -12,7 +12,7 @@
         <title>Financial Department</title>
     </head>
     <body>
-        <a href="financial_patient.jsp">Access Records by Patient ID</a>
+        <a href="financial_patient.jsp">Access Records by Patient ID</a><br/>
         <a href="financial_doctor.jsp">Access Records by Doctor ID</a>
     </body>
 </html>
