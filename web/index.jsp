@@ -12,7 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Horsepital</title>
     </head>
-    <body bgcolor="#E6E6FA">
+    <body>
             <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
@@ -34,7 +34,7 @@
             </form>
 
             <a href="doctor/doctor.jsp">Doctor</a><n/>
-            <a href="financial/financial.jsp">Financial</a>
+            <a href="financial.jsp">Financial</a>
             <a href="legal/legal.jsp">Legal</a>
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
