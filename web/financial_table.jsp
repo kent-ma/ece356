@@ -24,7 +24,17 @@
             Number of matched records: <%= visits.size() %>
             <br/>
             <br/>
-            
+            <tr>
+                <td>Appointment ID</td>
+                <td>Arrival Time</td>
+                <td>Departure Time</td>
+                <td>Procedure</td>
+                <td>Result</td>
+                <td>Prescription</td>
+                <td>Comment</td>
+                <td>Audit Time</td>
+                <td>Audit by ID</td>
+            </tr>
             <%
             for (Visit v : visits) {
                 %>
