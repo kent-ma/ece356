@@ -38,14 +38,39 @@ public class LoginServlet extends HttpServlet {
         
         String name = request.getParameter("name");
         String password = request.getParameter("password");
-        
         String url;
+        
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
             ResultSet rs = dbcon.selectRows("Login", null, "name = '" + name + "' AND " + "password = '" + password + "'");
             rs.next();
             int loginId = rs.getInt("UserType");
-            url = "/dbtest.jsp";
+            url = "error.jsp";
+            
+            switch(loginId){
+                case 0:
+                    url = "/patient/patient.jsp";
+                    break;
+                case 1:
+                    url = "/staff/staff.jsp";
+                    break;
+                case 2:
+                    url = "/doctor/doctor.jsp";
+                    break;
+                case 3:
+                    url = "/legal/legal.jsp";
+                    break;
+                case 4:
+                    url = "/financial/financial.jsp";
+                    break;
+                default:
+                    //throw error
+                    break;
+            }
+            
+            getServletContext().getRequestDispatcher(url).forward(request, response);
+            
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             url = "/error.jsp";
