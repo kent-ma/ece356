@@ -160,6 +160,17 @@ public class DatabaseConnection
         }
         return records;
     }
+    
+    public List<String> selectPrescriptions(String c) throws SQLException
+    {
+        ResultSet row = selectRows("Visit v, Appointment a", "prescription", "v.ApptId = a.ApptId and " + c);
+        List<String> records = new LinkedList<>();
+        
+        while (row.next())
+            records.add(row.getString("prescription"));
+        
+        return records;
+    }
          
     public boolean insertRows(String t, String cl, String v) throws SQLException
     {
