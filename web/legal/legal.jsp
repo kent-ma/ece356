@@ -23,6 +23,19 @@
         <div class="page-header">
             <h1>Legal Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span>
+        </div>
+        <div>
+            <form method="post" action="LoginServlet">
+                Visit ID: <input type="text" name="name"><br>
+                Visit Time: <input type="text" name="name"><br>
+                Visit Procedure: <input type="text" name="name"><br>
+                Visit ID: <input type="text" name="name"><br>
+                Visit ID: <input type="text" name="name"><br>
+                Visit ID: <input type="text" name="name"><br>
+                Visit ID: <input type="text" name="name"><br>
+                
+                <input type="submit" value="Login">
+            </form>
             <input type="submit" value="View Visit Records">
         </div>
 
