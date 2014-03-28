@@ -15,11 +15,23 @@ public class Staff {
     private String name;
     private String department;
     
+    public Staff(int staffId, String name, String department) {
+        this.staffId = staffId;
+        this.name = name;
+        this.department = department;
+    }
+    
+    public Staff() {
+        this.staffId = 0;
+        this.name = null;
+        this.department = null;
+    }
+    
     public int getStaffId(){return staffId;}
     public String getName(){return name;}
     public String getDepartment(){return department;}
     
-    public void setStaffId(){this.staffId = staffId;}
-    public void setName(){this.name = name;}
-    public void setDepartment(){this.department = department;}
+    public void setStaffId(int staffId) {this.staffId = staffId;}
+    public void setName(String name) {this.name = name;}
+    public void setDepartment(String department) {this.department = department;}
 }
