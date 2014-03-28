@@ -6,6 +6,7 @@
 
 package ece356;
 
+import ece356.Members.Login;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -42,12 +43,10 @@ public class LoginServlet extends HttpServlet {
         
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
-            ResultSet rs = dbcon.selectRows("Login", null, "name = '" + name + "' AND " + "password = '" + password + "'");
-            rs.next();
-            int loginId = rs.getInt("UserType");
+            Login credentials = dbcon.selectLogin("name = '" + name + "' AND " + "password = '" + password + "'");
             url = "error.jsp";
             
-            switch(loginId){
+            switch(credentials.getUserType()){
                 case 0:
                     url = "/patient/patient.jsp";
                     break;
@@ -68,6 +67,7 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
             
+            request.setAttribute("credentials", credentials);
             getServletContext().getRequestDispatcher(url).forward(request, response);
             
             
