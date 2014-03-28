@@ -9,9 +9,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Welcome, ________</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+    <div id="container">
+        <div id="welcome"><h1>Welcome Mr. SMD</h1></div>
+        <div id="user_info">
+            <body>This is the user information so STFU</body>
+        </div>
+        <div id="appts">
+            <body>GET OUT OF MY APPOINTMENTS</body>
+        </div>
+        <div id="perscriptions"><body>GET OUT OF MY PERSCRIPTIONS</body></div>
+    </div>
 </html>
