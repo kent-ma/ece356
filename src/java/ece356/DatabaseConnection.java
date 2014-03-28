@@ -10,6 +10,8 @@ import ece356.Members.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,6 +50,20 @@ public class DatabaseConnection
             sql += " where " + c + ";";
         
         return stmt.executeQuery(sql);
+    }
+    
+    public Login selectLogin(String c) throws SQLException
+    {
+        ResultSet row = selectRows("Login", null, c);
+        Login newLogin = new Login();
+        
+        row.next();
+        newLogin.setLoginId(row.getInt("LoginID"));
+        newLogin.setPassword(row.getString("Password"));
+        newLogin.setName(row.getString("Name"));
+        newLogin.setUserType(row.getInt("UserType"));
+        
+        return newLogin;
     }
     
     public Doctor selectDoctor(String c) throws SQLException
@@ -98,18 +114,49 @@ public class DatabaseConnection
         return newPatient;
     }
     
-    public List<Visit> selectVisits(String c)
+    public List<Visit> selectVisits(String c) throws SQLException
     {
         ResultSet row = selectRows("Visit", null, c);
-        List<Visit> records;
+        List<Visit> records = new LinkedList<>();
         
         while (row.next())
         {
             Visit newVisit = new Visit();
 
-            newStaff.setStaffId(row.getInt("StaffID"));
-            newStaff.setName(row.getString("Name"));
-            newStaff.setDepartment(row.getString("Department"));
+            newVisit.setApptID(row.getInt("ApptID"));
+            newVisit.setArrivalTime(row.getDate("ArrivalTime"));
+            newVisit.setDepartTime(row.getDate("DepartTime"));
+            newVisit.setProcedure(row.getString("V_Procedure"));
+            newVisit.setResult(row.getString("Result"));
+            newVisit.setPrescription(row.getString("Prescription"));
+            newVisit.setComment(row.getString("V_Comment"));
+            newVisit.setAuditTime(row.getDate("AuditTime"));
+            newVisit.setAuditByID(row.getInt("AuditByID"));
+            
+            records.add(newVisit);
+        }
+        return records;
+    }
+    
+    public List<Appointment> selectAppointments(String c) throws SQLException
+    {
+        ResultSet row = selectRows("Appointment", null, c);
+        List<Appointment> records = new LinkedList<>();
+        
+        while (row.next())
+        {
+            Appointment newVisit = new Appointment();
+
+            newVisit.setApptId(row.getInt("ApptID"));
+            newVisit.setPatientId(row.getInt("PatientID"));
+            newVisit.setDoctorId(row.getInt("DoctorID"));
+            newVisit.setRoomNumber(row.getInt("RoomNumber"));
+            newVisit.setApptDate(row.getDate("ApptDate"));
+            newVisit.setApptType(row.getString("ApptType"));
+            newVisit.setAuditTime(row.getDate("AuditTime"));
+            newVisit.setAuditById(row.getInt("AuditByID"));
+            
+            records.add(newVisit);
         }
         return records;
     }
