@@ -4,16 +4,16 @@
     Author     : kentma
 --%>
 
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Horsepital</title>
     </head>
     <body bgcolor="#E6E6FA">
-        <!-- Latest compiled and minified CSS -->
+            <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
         <!-- Optional theme -->
@@ -33,8 +33,9 @@
                 <input type="submit" value="Login">
             </form>
 
-            <a href="doctor.jsp">Doctor</a><n/>
-            <a href="financial.jsp">Financial</a>
+            <a href="doctor/doctor.jsp">Doctor</a><n/>
+            <a href="financial/financial.jsp">Financial</a>
+            <a href="legal/legal.jsp">Legal</a>
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -42,4 +43,6 @@
             <script src="js/bootstrap.min.js"></script>
         </center>    
     </body>
+</html>
+
 </html>

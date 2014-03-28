@@ -6,10 +6,8 @@
 
 package ece356;
 
-import ece356.Members.Login;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Hades
  */
-public class LoginServlet extends HttpServlet {
+public class LegalServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,40 +32,12 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String query = "";
-        
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
+            throws ServletException, IOException{
         String url;
-        
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
-            Login credentials = dbcon.selectLogin("name = '" + name + "' AND " + "password = '" + password + "'");
             url = "error.jsp";
             
-            switch(credentials.getUserType()){
-                case 0:
-                    url = "/patient/patient.jsp";
-                    break;
-                case 1:
-                    url = "/staff/staff.jsp";
-                    break;
-                case 2:
-                    url = "/doctor/doctor.jsp";
-                    break;
-                case 3:
-                    url = "/legal/legal.jsp";
-                    break;
-                case 4:
-                    url = "/financial/financial.jsp";
-                    break;
-                default:
-                    //throw error
-                    break;
-            }
-            
-            request.setAttribute("credentials", credentials);
             getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +49,23 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("exception", ex);
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LegalServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LegalServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
+        
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
