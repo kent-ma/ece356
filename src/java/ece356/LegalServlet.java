@@ -6,6 +6,7 @@
 
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;

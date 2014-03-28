@@ -4,6 +4,7 @@
  */
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
 import ece356.Members.Visit;
 import java.io.IOException;
 import java.io.PrintWriter;

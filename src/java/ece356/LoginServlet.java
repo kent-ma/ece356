@@ -6,6 +6,7 @@
 
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
 import ece356.Members.Login;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,19 +49,19 @@ public class LoginServlet extends HttpServlet {
             
             switch(credentials.getUserType()){
                 case 0:
-                    url = "/patient/patient.jsp";
+                    url = "/PatientServlet";
                     break;
                 case 1:
-                    url = "/staff/staff.jsp";
+                    url = "/StaffServlet";
                     break;
                 case 2:
-                    url = "/Doctor/doctor.jsp";
+                    url = "/DoctorServlet";
                     break;
                 case 3:
-                    url = "/legal/legal.jsp";
+                    url = "/LegalServlet";
                     break;
                 case 4:
-                    url = "/financial/financial.jsp";
+                    url = "/FinancialServlet";
                     break;
                 default:
                     //throw error

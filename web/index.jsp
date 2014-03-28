@@ -27,14 +27,14 @@
                 <span class="label label-default">Where the NSA monitors your history instead of your life</span>
             </div>
 
-            <form method="post" action="LoginServlet">
+            <form method="post" action="Portal">
                 Login ID: <input type="text" name="name"><br>
                 Password: <input type="password" name="password"><br>
                 <input type="submit" value="Login">
             </form>
 
             <a href="doctor/doctor.jsp">Doctor</a><n/>
-            <a href="financial.jsp">Financial</a>
+            <a href="financial/financial.jsp">Financial</a>
             <a href="legal/legal.jsp">Legal</a>
             <a href="staff/staff.jsp">Staff</a>
             <a href="patient/patient.jsp">Patient</a>

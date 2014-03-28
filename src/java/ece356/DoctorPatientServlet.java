@@ -5,6 +5,7 @@
  */
 
 package ece356;
+import ece356.Backend.DatabaseConnection;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
