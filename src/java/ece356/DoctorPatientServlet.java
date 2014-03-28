@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.sql.Timestamp;
 import ece356.Members.Patient;
+import ece356.Members.Visit;
+
 /**
  *
  * @author Claire
@@ -52,18 +54,18 @@ public class DoctorPatientServlet extends HttpServlet {
             visitTime = "'"+visitYear+"-"+visitMonth+"-"+visitDay+"'";
         }
         
+        ArrayList<Visit> visitRecord = new ArrayList<Visit>();
         ArrayList<Patient> patients = new ArrayList<Patient>();
         
         try {
             // Get database connection.
             DatabaseConnection dbcon = new DatabaseConnection();
+            ResultSet patient = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo and ");
+
+            // Retrieve patient record using patient id. 
+            Patient patientsResult = dbcon.selectPatient("PatientID =" +patientID+ " AND Name" +patientName+"" );
+            patients.add(patientsResult);
             
-            // Retrieve appointments by patient id. 
-            /*ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = "+patientID);
-            while (appt.next()) {
-                apptID.add(appt.getInt("ApptID"));
-            }
-            */
             // Retrieve records using ApptID.
             /*for (int a : apptID) {
                 ResultSet visit;

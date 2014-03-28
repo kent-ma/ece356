@@ -36,6 +36,8 @@
             <a href="doctor/doctor.jsp">Doctor</a><n/>
             <a href="financial.jsp">Financial</a>
             <a href="legal/legal.jsp">Legal</a>
+            <a href="staff/staff.jsp">Staff</a>
+            <a href="patient/patient.jsp">Patient</a>
 
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
