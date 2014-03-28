@@ -20,7 +20,7 @@
         <input type="submit" value="Login">
     </form>
     
-    <a href="doctor.jsp">Doctor</a><n/>
+    <a href="Doctor/doctor.jsp">Doctor</a><n/>
     <a href="financial.jsp">Financial</a>
     </body>
 </html>
