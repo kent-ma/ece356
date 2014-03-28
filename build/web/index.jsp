@@ -4,42 +4,25 @@
     Author     : kentma
 --%>
 
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body bgcolor="#E6E6FA">
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-        
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        
-        <center>
-            <div class="page-header">
-                <h1>Horsepital</h1>
-                <span class="label label-default">Where the NSA monitors your history instead of your life</span>
-            </div>
-
-            <form method="post" action="LoginServlet">
-                Login ID: <input type="text" name="name"><br>
-                Password: <input type="password" name="password"><br>
-                <input type="submit" value="Login">
-            </form>
-
-            <a href="doctor.jsp">Doctor</a><n/>
-            <a href="financial.jsp">Financial</a>
-
-            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-            <!-- Include all compiled plugins (below), or include individual files as needed -->
-            <script src="js/bootstrap.min.js"></script>
-        </center>    
+    <img src="Resources/horsepital_banner.jpg" height="90" width="720">
+    <form method="post" action="LoginServlet">
+        Login ID: <input type="text" name="name"><br>
+        Password: <input type="text" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+    
+    <a href="Doctor/doctor.jsp">Doctor</a><n/>
+    <a href="financial.jsp">Financial</a>
     </body>
+</html>
+
 </html>
