@@ -63,7 +63,7 @@ public class FinancialDoctorServlet extends HttpServlet {
             DatabaseConnection dbcon = new DatabaseConnection();
             
             // Retrieve appointments by patient id. 
-            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "DoctorID = "+doctorID);
+            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "DoctorID = '"+doctorID+"'");
             while (appt.next()) {
                 apptID.add(appt.getInt("ApptID"));
             }
@@ -72,10 +72,10 @@ public class FinancialDoctorServlet extends HttpServlet {
             for (int a : apptID) {
                 ResultSet visit;
                 if (startTime.equals("") || endTime.equals("")) {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a);
+                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+"'");
                 } else {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = "+a+
-                        " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
+                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+
+                        "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
                 }
                 
                 if (visit.next()) {
