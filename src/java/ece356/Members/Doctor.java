@@ -11,23 +11,34 @@ package ece356.Members;
  * @author Hades
  */
 public class Doctor {
-    private int staffId;
+    private int doctorId;
     private String name;
     private String department;
+    private String specialty;
     
-    public Doctor(int staffId, String name, String department){
-        this.staffId = staffId;
+    public Doctor(int doctorId, String name, String department, String specialty){
+        this.doctorId = doctorId;
         this.name = name;
         this.department = department;
+        this.specialty = specialty;
     }
     
-    public int getStaffId(){return staffId;}
+    public Doctor() {
+        this.doctorId = 0;
+        this.name = null;
+        this.department = null;
+        this.specialty = null;
+    }
+    
+    public int getDoctorId(){return doctorId;}
     public String getName(){return name;}
     public String getDepartment(){return department;}
+    public String getSpecialty(){return specialty;}
     
-    public void setStaffId(int staffId){this.staffId = staffId;}
+    public void setDoctorId(int doctorId){this.doctorId = doctorId;}
     public void setName(String name){this.name = name;}
     public void setDepartment(String department){this.department = department;}
+    public void setSpecialty(String specialty){this.specialty = specialty;}
     
     
     
