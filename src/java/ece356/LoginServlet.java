@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
                     url = "/staff/staff.jsp";
                     break;
                 case 2:
-                    url = "/doctor/doctor.jsp";
+                    url = "/Doctor/doctor.jsp";
                     break;
                 case 3:
                     url = "/legal/legal.jsp";
@@ -67,6 +67,7 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
             
+            request.setAttribute("dbcon", dbcon);
             request.setAttribute("credentials", credentials);
             getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {

@@ -11,7 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Doctor Index Page</title>
     </head>
-    <body>
+    <body><% if (request.getAttribute("credentials") == null) {request.setAttribute("exception", new Exception("Bad login.")); String url = "/error.jsp"; getServletContext().getRequestDispatcher(url).forward(request, response);} %>
         <li><a href="doctor_grantaccess.jsp">Grant Patient Record Access to Doctors</a></li>
         <li><a href="doctor_searchpatients.jsp">Search for Patient</a></li>
         <li><a href="doctor_addvisitrecord.jsp">Add Visit Record</a></li>      
