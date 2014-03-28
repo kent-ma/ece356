@@ -16,10 +16,16 @@
     </head>
     <body>
         <%--Retrieve visits from servlet--%>
-        <table border="1" style="width:600px">
+        <table border="1" style="width:800px">
         <%
             ArrayList<Visit> visits = (ArrayList<Visit>)session.getAttribute("visits");
+            %>
             
+            Number of matched records: <%= visits.size() %>
+            <br/>
+            <br/>
+            
+            <%
             for (Visit v : visits) {
                 %>
                 <tr>
