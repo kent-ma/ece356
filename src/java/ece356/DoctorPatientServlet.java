@@ -60,12 +60,11 @@ public class DoctorPatientServlet extends HttpServlet {
         try {
             // Get database connection.
             DatabaseConnection dbcon = new DatabaseConnection();
-            ResultSet patient = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo and ");
+            ResultSet patient = dbcon.selectRows("Patient p", null, "p.Name =" +patientName+" and p.PatientID =" +patientID);
 
             // Retrieve patient record using patient id. 
-            Patient patientsResult = dbcon.selectPatient("PatientID =" +patientID+ " AND Name" +patientName+"" );
-            patients.add(patientsResult);
-            
+            //patients.add(patientsResult);
+            //gi
             // Retrieve records using ApptID.
             /*for (int a : apptID) {
                 ResultSet visit;
