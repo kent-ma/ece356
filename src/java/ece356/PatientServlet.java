@@ -5,8 +5,11 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Backend.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +36,6 @@ public class PatientServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             DatabaseConnection dbc = new DatabaseConnection();
-
             /* TODO output your page here
              out.println("<html>");
              out.println("<head>");
@@ -45,7 +47,8 @@ public class PatientServlet extends HttpServlet {
              out.println("</html>");
              */
         } catch (Exception e) {
-            
+            Logger.getLogger(PatientServlet.class.getName()).log(Level.SEVERE, null, e);
+            Utils.showErrorPage(getServletContext(), e, request, response);
         } finally {
             out.close();
         }
