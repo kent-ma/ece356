@@ -51,6 +51,4 @@ public class Login {
     public void setUserType(int userType) {
         this.userType = userType;
     }
-    
-    
 }

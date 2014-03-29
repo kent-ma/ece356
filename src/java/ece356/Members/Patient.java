@@ -22,11 +22,12 @@ public class Patient {
     private String healthStatus;
     private long phoneNum;
     private int defDoctorId;
+    private String defDoctorName;
     private Date auditTime;
     private int auditById;
     
     public Patient(String name, String address, Date dob, int patientId, int sin, 
-            String healthCardNo,String healthStatus, long phoneNum, int defDoctorId, 
+            String healthCardNo,String healthStatus, long phoneNum, int defDoctorId, String defDoctorName,
             Date auditTime, int auditById){
         this.name = name;
         this.address = address;
@@ -37,9 +38,12 @@ public class Patient {
         this.healthStatus = healthStatus;
         this.phoneNum = phoneNum;
         this.defDoctorId = defDoctorId;
+        this.defDoctorName = defDoctorName;
         this.auditTime = auditTime;
         this.auditById = auditById;
     }
+
+    
     
     public Patient() {
         this.name = null;
@@ -51,6 +55,7 @@ public class Patient {
         this.healthStatus = null;
         this.phoneNum = 0;
         this.defDoctorId = 0;
+        this.defDoctorName = null;
         this.auditTime = null;
         this.auditById = 0;
     }
@@ -78,4 +83,11 @@ public class Patient {
     public void setDefDoctorId(int defDoctorId){this.defDoctorId = defDoctorId;}
     public void setAuditTime(Date auditTime){this.auditTime = auditTime;}
     public void setAuditById(int auditById){this.auditById = auditById;}
+    public String getDefDoctorName() {
+        return defDoctorName;
+    }
+
+    public void setDefDoctorName(String defDoctorName) {
+        this.defDoctorName = defDoctorName;
+    }
 }

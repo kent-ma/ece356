@@ -6,10 +6,10 @@ package ece356;
 
 import ece356.Backend.DatabaseConnection;
 import ece356.Backend.Utils;
-import ece356.Members.Login;
-import ece356.Members.Patient;
+import ece356.Members.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -41,23 +41,39 @@ public class PatientServlet extends HttpServlet {
         try {
             DatabaseConnection dbc = null;
             ServletContext context = getServletContext();
-            
+            int requestType = 0;
+
+            if (request.getParameter("requestType") != null) {
+                requestType = Integer.parseInt(request.getParameter("requestType"));
+            }
+
             Login login = (Login) context.getAttribute(Utils.ATTR_CREDENTIALS);
             dbc = (DatabaseConnection) context.getAttribute(Utils.ATTR_DBC);
-            
-            if (login == null || dbc == null){
-                
+
+            if (login == null || dbc == null) {
+
             }
-            
-            Patient p = dbc.selectPatient("PatientID = " + login.getLoginId());
-            request.setAttribute("patient", p);
-            
-            if (p != null){
-                RequestDispatcher rd;
-                rd = request.getRequestDispatcher("/patient/patient.jsp");
-                rd.forward(request, response);
+
+            if (requestType == 0) {
+                Patient p = dbc.selectPatient("PatientID = " + login.getLoginId());
+                request.setAttribute("patient", p);
+                if (p != null) {
+                    List<Appointment> appts = dbc.selectAppointments("a.PatientID = " + login.getLoginId());
+                    request.setAttribute("appts", appts);
+                    List<Prescription> prescriptions = dbc.selectPrescriptions("a.PatientID = " + login.getLoginId());
+                    request.setAttribute("prescriptions", prescriptions);
+                    RequestDispatcher rd;
+                    rd = request.getRequestDispatcher("/patient/patient.jsp");
+                    rd.forward(request, response);
+                } else {
+                    // TODO - Display a wtf is going on error
+                }
+            } else if (requestType == 1) {
+                String newAddr = request.getParameter("addr");
+                String newPhone = request.getParameter("phonenum");
+
             }
-             
+
         } catch (Exception e) {
             Logger.getLogger(PatientServlet.class.getName()).log(Level.SEVERE, null, e);
             Utils.showErrorPage(getServletContext(), e, request, response);

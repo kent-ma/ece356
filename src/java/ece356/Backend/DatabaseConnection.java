@@ -10,7 +10,6 @@ import ece356.Members.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.AbstractList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,11 +94,11 @@ public class DatabaseConnection
     
     public Patient selectPatient(String c) throws SQLException
     {
-        ResultSet row = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo and " + c);
+        ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName , d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
         Patient newPatient = new Patient();
         
         row.next();
-        newPatient.setName(row.getString("Name"));
+        newPatient.setName(row.getString("pName"));
         newPatient.setAddress(row.getString("Address"));
         newPatient.setDob(row.getDate("DOB"));
         newPatient.setPatientId(row.getInt("PatientID"));
@@ -108,6 +107,7 @@ public class DatabaseConnection
         newPatient.setHealthStatus(row.getString("HealthStatus"));
         newPatient.setPhoneNum(row.getLong("Phone"));
         newPatient.setDefDoctorId(row.getInt("DefDoctorID"));
+        newPatient.setDefDoctorName(row.getString("dName"));
         newPatient.setAuditTime(row.getDate("AuditTime"));
         newPatient.setAuditById(row.getInt("AuditByID"));
         
@@ -116,7 +116,7 @@ public class DatabaseConnection
     
     public List<Patient> selectPatients(String c) throws SQLException
     {
-        ResultSet row = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo and " + c);
+        ResultSet row = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo " + c);
         List<Patient> records = new LinkedList<>();
         
         while (row.next())
@@ -187,13 +187,20 @@ public class DatabaseConnection
         return records;
     }
     
-    public List<String> selectPrescriptions(String c) throws SQLException
+    public List<Prescription> selectPrescriptions(String c) throws SQLException
     {
-        ResultSet row = selectRows("Visit v, Appointment a", "prescription", "v.ApptId = a.ApptId and " + c);
-        List<String> records = new LinkedList<>();
+        ResultSet row = selectRows("Visit v, Appointment a, Doctor d", "prescription , name, ApptDate", "v.ApptId = a.ApptId and d.DoctorID = a.DoctorID and " + c);
+        List<Prescription> records = new LinkedList<>();
         
-        while (row.next())
-            records.add(row.getString("prescription"));
+        while (row.next()){
+            Prescription p = new Prescription();
+            p.setPrescription(row.getString("prescription"));
+            p.setDoctor(row.getString("name"));
+            p.setDate(row.getTimestamp("ApptDate"));
+            records.add(p);
+        }
+            
+        
         
         return records;
     }
