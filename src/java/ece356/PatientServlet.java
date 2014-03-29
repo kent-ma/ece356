@@ -4,8 +4,12 @@
  */
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
+import ece356.Backend.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PatientServlet extends HttpServlet {
 
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -29,24 +35,29 @@ public class PatientServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            DatabaseConnection dbc = new DatabaseConnection();
             /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+             out.println("<html>");
+             out.println("<head>");
+             out.println("<title>Servlet FinancialServlet</title>");  
+             out.println("</head>");
+             out.println("<body>");
+             out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
+             out.println("</body>");
+             out.println("</html>");
              */
-        } finally {            
+        } catch (Exception e) {
+            Logger.getLogger(PatientServlet.class.getName()).log(Level.SEVERE, null, e);
+            Utils.showErrorPage(getServletContext(), e, request, response);
+        } finally {
             out.close();
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,8 +69,9 @@ public class PatientServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -71,8 +83,9 @@ public class PatientServlet extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
