@@ -9,7 +9,9 @@ import ece356.Members.Login;
 import ece356.Members.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -73,14 +75,13 @@ public class StaffServlet extends HttpServlet {
         }
         else if (requestType == 1)
         {
-            Patient record = null;
+            List<Patient> record = null;
             try
             {
-                record = dbCon.selectPatient("name = '" + (String)request.getParameter("patientName") + "'");
+                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))");
                 
                 String url = "/staff/staff_patient_info.jsp";
-                request.setAttribute("name", record.getName());
-                request.setAttribute("hcn", record.getHealthCardNo());
+                request.setAttribute("record", record);
                 getServletContext().getRequestDispatcher(url).include(request, response);
             }
             catch (SQLException ex)
