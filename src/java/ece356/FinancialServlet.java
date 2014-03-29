@@ -40,6 +40,8 @@ public class FinancialServlet extends HttpServlet {
             credentials = (Login)getServletContext().getAttribute("credentials");
             if (credentials.getUserType() != 4)
                 throw new Exception("Bad user type.");
+            
+            request.setAttribute("name", credentials.getName());
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
             getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
