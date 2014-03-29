@@ -21,6 +21,7 @@
             <span class="label label-default">Freedom is how big your wallet is</span><br>
              <small> Welcome ${name} </small><a href="/ece356/Logout">Logout</a>
         </div>
+        
         <form method="post" action="/ece356/FinancialServlet">
             <input type="hidden" name="requestType" value="1">
             <input type="submit" name="submit_doctor" value="Access Records by Doctor ID">
@@ -30,5 +31,8 @@
             <input type="hidden" name="requestType" value="2">
             <input type="submit" name="submit_patient" value="Access Records by Patient ID">
         </form>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
