@@ -13,7 +13,8 @@
     </head>
     <body>
         <h3>Search Visitation Records</h3>
-        <form method="post" action="/ece356/FinancialPatientServlet">
+        <form method="post" action="/ece356/FinancialServlet">
+        <input type="hidden" name="requestType" value="4">
             Start Date: 
             <br/>
             Year: <input type="text" name="start_year">

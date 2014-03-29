@@ -53,6 +53,10 @@
             }
         %>
         </table>
-        <a href="financial/financial.jsp">Start a New Search</a>
+        <!--<a href="financial/financial.jsp">Start a New Search</a>-->
+        <form method="post" action="/ece356/FinancialServlet">
+            <input type="hidden" name="requestType" value="5">
+            <input type="submit" value="Start a New Search">
+        </form>
     </body>
 </html>
