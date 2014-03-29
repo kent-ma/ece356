@@ -20,13 +20,13 @@ public class Patient {
     private int sin;
     private String healthCardNo;
     private String healthStatus;
-    private int phoneNum;
+    private long phoneNum;
     private int defDoctorId;
     private Date auditTime;
     private int auditById;
     
     public Patient(String name, String address, Date dob, int patientId, int sin, 
-            String healthCardNo,String healthStatus, int phoneNum, int defDoctorId, 
+            String healthCardNo,String healthStatus, long phoneNum, int defDoctorId, 
             Date auditTime, int auditById){
         this.name = name;
         this.address = address;
@@ -62,7 +62,7 @@ public class Patient {
     public int getSin(){return sin;}
     public String getHealthCardNo(){return healthCardNo;}
     public String getHealthStatus(){return healthStatus;}
-    public int getPhoneNum(){return phoneNum;}
+    public long getPhoneNum(){return phoneNum;}
     public int getDefDoctorId(){return defDoctorId;}
     public Date getAuditTime(){return auditTime;}
     public int getAuditById(){return auditById;}
@@ -74,7 +74,7 @@ public class Patient {
     public void setSin(int sin){this.sin = sin;}
     public void setHealthCardNo(String healthCardNo){this.healthCardNo = healthCardNo;}
     public void setHealthStatus(String healthStatus){this.healthStatus = healthStatus;}
-    public void setPhoneNum(int phoneNum){this.phoneNum = phoneNum;}
+    public void setPhoneNum(long phoneNum){this.phoneNum = phoneNum;}
     public void setDefDoctorId(int defDoctorId){this.defDoctorId = defDoctorId;}
     public void setAuditTime(Date auditTime){this.auditTime = auditTime;}
     public void setAuditById(int auditById){this.auditById = auditById;}

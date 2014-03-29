@@ -102,11 +102,11 @@ public class DatabaseConnection
         newPatient.setName(row.getString("Name"));
         newPatient.setAddress(row.getString("Address"));
         newPatient.setDob(row.getDate("DOB"));
-        newPatient.setPatientId(row.getInt("DoctorID"));
+        newPatient.setPatientId(row.getInt("PatientID"));
         newPatient.setSin(row.getInt("SIN"));
         newPatient.setHealthCardNo(row.getString("HealthCardNo"));
         newPatient.setHealthStatus(row.getString("HealthStatus"));
-        newPatient.setPhoneNum(row.getInt("Phone"));
+        newPatient.setPhoneNum(row.getLong("Phone"));
         newPatient.setDefDoctorId(row.getInt("DefDoctorID"));
         newPatient.setAuditTime(row.getDate("AuditTime"));
         newPatient.setAuditById(row.getInt("AuditByID"));

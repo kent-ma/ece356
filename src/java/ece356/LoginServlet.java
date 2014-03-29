@@ -68,8 +68,11 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
             
+            getServletContext().setAttribute("dbcon", dbcon);
+            getServletContext().setAttribute("credentials", credentials);
             request.setAttribute("dbcon", dbcon);
             request.setAttribute("credentials", credentials);
+            request.setAttribute("requestType", 0);
             getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);

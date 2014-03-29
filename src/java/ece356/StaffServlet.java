@@ -4,8 +4,14 @@
  */
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
+import ece356.Members.Login;
+import ece356.Members.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,21 +32,55 @@ public class StaffServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
-        } finally {            
-            out.close();
+        
+        DatabaseConnection dbCon = null;
+        Login credentials = null;
+        int requestType = 0;
+        
+        try
+        {
+            dbCon = (DatabaseConnection)getServletContext().getAttribute("dbcon");
+            credentials = (Login)getServletContext().getAttribute("credentials");
+            if (credentials.getUserType() != 1)
+                throw new Exception("Bad user type.");
+            if (request.getParameter("requestType") == null)
+                requestType = (int)request.getAttribute("requestType");
+            else
+                requestType = Integer.parseInt(request.getParameter("requestType"));
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            String url = "/error.jsp";
+            request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher(url).include(request, response);
+        }
+        
+        if (requestType == 0)
+        {
+            String url = "/staff/staff.jsp";
+            request.setAttribute("name", credentials.getName());
+            getServletContext().getRequestDispatcher(url).include(request, response);
+        }
+        else if (requestType == 1)
+        {
+            Patient record = null;
+            try
+            {
+                record = dbCon.selectPatient("name = '" + (String)request.getParameter("patientName") + "'");
+                
+                String url = "/staff/staff_patient_info.jsp";
+                request.setAttribute("name", record.getName());
+                request.setAttribute("hcn", record.getHealthCardNo());
+                getServletContext().getRequestDispatcher(url).include(request, response);
+            }
+            catch (SQLException ex)
+            {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                String url = "/error.jsp";
+                request.setAttribute("exception", ex);
+                getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
         }
     }
 
