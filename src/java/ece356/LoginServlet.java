@@ -10,6 +10,8 @@ import ece356.Backend.DatabaseConnection;
 import ece356.Members.Login;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -44,7 +47,7 @@ public class LoginServlet extends HttpServlet {
         
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
-            Login credentials = dbcon.selectLogin("name = '" + name + "' AND " + "password = '" + password + "'");
+            Login credentials = dbcon.selectLogin("name = '" + name + "' AND " + "password = '" + DigestUtils.sha256Hex(password) + "'");
             url = "error.jsp";
             
             switch(credentials.getUserType()){
@@ -70,19 +73,25 @@ public class LoginServlet extends HttpServlet {
             
             getServletContext().setAttribute("dbcon", dbcon);
             getServletContext().setAttribute("credentials", credentials);
-            request.setAttribute("dbcon", dbcon);
-            request.setAttribute("credentials", credentials);
-            request.setAttribute("requestType", 0);
-            getServletContext().getRequestDispatcher(url).forward(request, response);
+            
+            response.sendRedirect(url);
+            // need to remove these 3 lines
+            //request.setAttribute("dbcon", dbcon);
+            //request.setAttribute("credentials", credentials);
+            //request.setAttribute("requestType", 0);
+            // above this
+            //getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             url = "/error.jsp";
             request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher(url).forward(request, response);
             
         } catch (SQLException ex) {
             url = "/error.jsp";
             request.setAttribute("exception", ex);
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            getServletContext().getRequestDispatcher(url).forward(request, response);
         }
     }
 

@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DatabaseConnection 
 {
-    public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
+    public static final String url = "jdbc:mysql://localhost:3306/";
     public static final String user = "user_dwbinnie";
     public static final String pwd = "user_dwbinnie";
     public static final String db = "4a1w";

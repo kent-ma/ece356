@@ -39,10 +39,6 @@ public class StaffServlet extends HttpServlet {
         
         try
         {
-            dbCon = (DatabaseConnection)getServletContext().getAttribute("dbcon");
-            credentials = (Login)getServletContext().getAttribute("credentials");
-            if (credentials.getUserType() != 1)
-                throw new Exception("Bad user type.");
             if (request.getParameter("requestType") == null)
                 requestType = (int)request.getAttribute("requestType");
             else
@@ -50,10 +46,23 @@ public class StaffServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
+            
+        }
+        
+        try
+        {
+            dbCon = (DatabaseConnection)getServletContext().getAttribute("dbcon");
+            credentials = (Login)getServletContext().getAttribute("credentials");
+            if (credentials.getUserType() != 1)
+                throw new Exception("Bad user type.");
+            
+        }
+        catch (Exception ex)
+        {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             String url = "/error.jsp";
             request.setAttribute("exception", ex);
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            getServletContext().getRequestDispatcher(url).forward(request, response);
         }
         
         if (requestType == 0)
