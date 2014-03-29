@@ -104,7 +104,7 @@ public class FinancialServlet extends HttpServlet {
         
         try {
             // Retrieve appointments by patient id. 
-            appts = dbcon.selectAppointments("DoctorID = '"+doctorID+"'");
+            appts = dbcon.selectAppointments("a.DoctorID = '"+doctorID+"'");
             
             // Retrieve records using ApptID.
             for (Appointment a : appts) {
@@ -158,7 +158,7 @@ public class FinancialServlet extends HttpServlet {
         
         try {
             // Retrieve appointments by patient id. 
-            appts = dbcon.selectAppointments("PatientID = '"+patientID+"'");
+            appts = dbcon.selectAppointments("a.PatientID = '"+patientID+"'");
             
             // Retrieve records using ApptID.
             for (Appointment a : appts) {
