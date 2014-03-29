@@ -4,6 +4,7 @@
     Author     : kentma
 --%>
 
+<%@page import="ece356.Members.Doctor"%>
 <%@page import="java.util.List"%>
 <%@page import="ece356.Members.Patient"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,6 +32,7 @@
                 <td>SIN</td>
                 <td>OHIP Number</td>
                 <td>Status</td>
+                <td>Assign to Doctor</td>
             </tr>
             <%
             for (Patient p : patients) {
@@ -43,6 +45,20 @@
                     <td><%= p.getSin() %></td>
                     <td><%= p.getHealthCardNo() %></td>
                     <td><%= p.getHealthStatus() %></td>
+                    <td>
+                        <form method="post" action="StaffServlet">
+                            <select name="doctors"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
+                            <% for (Doctor d : doctors) { %>
+                                <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>
+                            <% } %>
+                            </select>
+                            <input type="hidden" name="patientName" value="<%= request.getParameter("patientName") %>">
+                            <input type="hidden" name="patientOHIP" value="<%= request.getParameter("patientOHIP") %>">
+                            <input type="hidden" name="patientID" value="<%= p.getPatientId() %>">
+                            <input type="hidden" name="requestType" value="5">
+                            <input type="submit" value="Assign">
+                        </form>
+                    </td>
                 </tr>
                 <%
             }
