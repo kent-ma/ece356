@@ -76,18 +76,26 @@ public class FinancialServlet extends HttpServlet {
             throws ServletException, IOException{
         
         String doctorID = request.getParameter("doctor_id");
-        
         String startDateString = request.getParameter("start_date");
-        String[] startDateArray = startDateString.split("/");
-        String startYear = startDateArray[2];
-        String startMonth = startDateArray[0];
-        String startDay = startDateArray[1];
-        
         String endDateString = request.getParameter("end_date");
-        String[] endDateArray = endDateString.split("/");
-        String endYear = endDateArray[2];
-        String endMonth = endDateArray[0];
-        String endDay = endDateArray[1];
+        String startYear = "";
+        String startMonth = "";
+        String startDay = "";
+        String endYear = "";
+        String endMonth = "";
+        String endDay = "";
+        
+        if (!startDateString.equals("") && !endDateString.equals("")) {
+            String[] startDateArray = startDateString.split("/");
+            startYear = startDateArray[2];
+            startMonth = startDateArray[0];
+            startDay = startDateArray[1];
+            
+            String[] endDateArray = endDateString.split("/");
+            endYear = endDateArray[2];
+            endMonth = endDateArray[0];
+            endDay = endDateArray[1];
+        }
         
         String startTime = "";
         String endTime = "";
@@ -132,16 +140,25 @@ public class FinancialServlet extends HttpServlet {
         String patientID = request.getParameter("patient_id");
         
         String startDateString = request.getParameter("start_date");
-        String[] startDateArray = startDateString.split("/");
-        String startYear = startDateArray[2];
-        String startMonth = startDateArray[0];
-        String startDay = startDateArray[1];
-        
         String endDateString = request.getParameter("end_date");
-        String[] endDateArray = endDateString.split("/");
-        String endYear = endDateArray[2];
-        String endMonth = endDateArray[0];
-        String endDay = endDateArray[1];
+        String startYear = "";
+        String startMonth = "";
+        String startDay = "";
+        String endYear = "";
+        String endMonth = "";
+        String endDay = "";
+        
+        if (!startDateString.equals("") && !endDateString.equals("")) {
+            String[] startDateArray = startDateString.split("/");
+            startYear = startDateArray[2];
+            startMonth = startDateArray[0];
+            startDay = startDateArray[1];
+            
+            String[] endDateArray = endDateString.split("/");
+            endYear = endDateArray[2];
+            endMonth = endDateArray[0];
+            endDay = endDateArray[1];
+        }
         
         String startTime = "";
         String endTime = "";

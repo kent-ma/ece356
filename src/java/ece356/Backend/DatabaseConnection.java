@@ -208,6 +208,7 @@ public class DatabaseConnection
     public boolean insertRows(String t, String cl, String v) throws SQLException
     {
         String sql = "INSERT INTO " + t + "(" + cl + ") VALUES(" + v + ");";
+        sql.replaceAll("(?i)DROP", "");
         return stmt.execute(sql);
     }
     

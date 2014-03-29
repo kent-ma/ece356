@@ -91,7 +91,7 @@ public class StaffServlet extends HttpServlet {
             }
             
             String url = "/staff/staff.jsp";
-            request.setAttribute("doctorlist", record);
+            getServletContext().setAttribute("doctorlist", record);
             request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher(url).include(request, response);
         }
@@ -133,6 +133,37 @@ public class StaffServlet extends HttpServlet {
                 getServletContext().getRequestDispatcher(url).include(request, response);
             }
             catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+        }
+        else if (requestType == 5)
+        {
+            String pId = request.getParameter("patientID");
+            String dId = request.getParameter("doctors");
+            
+            String c = "";
+            if (!request.getParameter("patientName").equals(""))
+                c += " and Name = '" + request.getParameter("patientName") + "'";
+            if (!request.getParameter("patientOHIP").equals(""))
+                c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
+            
+            List<Patient> record = null;
+            
+            try 
+            {
+                if (!dbCon.selectRows("DoctorPatient", null, "PatientID = " + pId + " and DoctorID = " + dId).next())
+                {
+                    dbCon.insertRows("DoctorPatient", "DoctorID, PatientID", dId + ", " + pId);
+                }
+                
+                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
+                
+                String url = "/staff/staff_patient_info.jsp";
+                request.setAttribute("record", record);
+                getServletContext().getRequestDispatcher(url).include(request, response);
+            } 
+            catch (SQLException ex) 
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }

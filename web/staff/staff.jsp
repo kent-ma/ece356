@@ -26,7 +26,7 @@
         <p><b>Get Appointment Info</b>
         <form method="post" action="StaffServlet">
             Appt Time: <input type="datetime" name="apptTime"><br>
-            Doctor Name: <select name="doctors"><% List<Doctor> doctors = (List<Doctor>)request.getAttribute("doctorlist"); %>
+            Doctor Name: <select name="doctors"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
             <% for (Doctor d : doctors) { %>
             <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>
             <% } %>
