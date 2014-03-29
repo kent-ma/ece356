@@ -26,21 +26,12 @@ public class FinancialServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
-        } finally {            
-            out.close();
+            getServletContext().getRequestDispatcher("/financial/financial.jsp").forward(request, response);
+        } catch (Exception ex) {            
+            request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

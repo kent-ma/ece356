@@ -98,8 +98,8 @@ public class FinancialPatientServlet extends HttpServlet {
             }
             
             // Display the visitation records on a table.
-            request.getSession().setAttribute("visits", visits);
-            getServletContext().getRequestDispatcher("/financial_table.jsp").forward(request, response);
+            request.setAttribute("visits", visits);
+            getServletContext().getRequestDispatcher("/financial/financial_table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
             getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);

@@ -18,7 +18,7 @@
         <%--Retrieve visits from servlet--%>
         <table border="1" style="width:800px">
         <%
-            ArrayList<Visit> visits = (ArrayList<Visit>)session.getAttribute("visits");
+            ArrayList<Visit> visits = (ArrayList<Visit>)request.getAttribute("visits");
             %>
             
             Number of matched records: <%= visits.size() %>
@@ -53,6 +53,6 @@
             }
         %>
         </table>
-        <a href="financial.jsp">Start a New Search</a>
+        <a href="financial/financial.jsp">Start a New Search</a>
     </body>
 </html>
