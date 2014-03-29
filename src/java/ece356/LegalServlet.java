@@ -7,9 +7,11 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Members.Visit;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,10 +36,11 @@ public class LegalServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        String url;
+        String url = null;
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
-            url = "error.jsp";
+            
+            List<Visit> vs = dbcon.selectVisits("WHERE ApptID = *");
             
             getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {

@@ -13,6 +13,27 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h3>Search Visitation Records</h3>
+        <form method="post" action="DoctorPatientServlet">
+            Patient Name:<input type="text" name="patient_name"><br/>
+            <br/>
+            Patient ID: <input type="text" name="patient_id"><br/>
+            <br/>            
+           Start Date: 
+            <br/>
+            Year: <input type="text" name="start_year">
+            Month: <input type="text" name="start_month">
+            Day: <input type="text" name="start_day">
+            <br/>
+            <br/>
+            End Date: 
+            <br/>
+            Year: <input type="text" name="end_year">
+            Month: <input type="text" name="end_month">
+            Day: <input type="text" name="end_day">
+            <br/>
+            <br/>            
+            <input type="submit" value="Search">
+        </form>
     </body>
 </html>

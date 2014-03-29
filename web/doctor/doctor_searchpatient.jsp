@@ -50,11 +50,18 @@
             <br/>
             Patient ID: <input type="text" name="patient_id"><br/>
             <br/>            
-            Last Visit Date: 
+           Start Date: 
             <br/>
-            Year: <input type="text" name="visit_year">
-            Month: <input type="text" name="visit_month">
-            Day: <input type="text" name="visit_day">
+            Year: <input type="text" name="start_year">
+            Month: <input type="text" name="start_month">
+            Day: <input type="text" name="start_day">
+            <br/>
+            <br/>
+            End Date: 
+            <br/>
+            Year: <input type="text" name="end_year">
+            Month: <input type="text" name="end_month">
+            Day: <input type="text" name="end_day">
             <br/>
             <br/>            
             <input type="submit" value="Search">
