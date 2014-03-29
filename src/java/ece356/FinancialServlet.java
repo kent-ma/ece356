@@ -5,13 +5,11 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Members.Appointment;
 import ece356.Members.Login;
 import ece356.Members.Visit;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -93,45 +91,21 @@ public class FinancialServlet extends HttpServlet {
             endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
         }
         
-        ArrayList<Integer> apptID = new ArrayList<Integer>();
-        ArrayList<Visit> visits = new ArrayList<Visit>();
+        List<Appointment> appts = null;
+        List<Visit> visits = null;
         
         try {
-            // Get database connection.
-            //dbcon = new DatabaseConnection();
-            
             // Retrieve appointments by patient id. 
-            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "DoctorID = '"+doctorID+"'");
-            while (appt.next()) {
-                apptID.add(appt.getInt("ApptID"));
-            }
+            appts = dbcon.selectAppointments("DoctorID = '"+doctorID+"'");
             
             // Retrieve records using ApptID.
-            for (int a : apptID) {
-                ResultSet visit;
+            for (Appointment a : appts) {
+                //ResultSet visit;
                 if (startTime.equals("") || endTime.equals("")) {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+"'");
+                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+"'");
                 } else {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+
+                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+
                         "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
-                }
-                
-                if (visit.next()) {
-                    // Create a Visit object and store the object into a list.
-                    int vApptID = visit.getInt("ApptID");
-                    Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
-                    Timestamp vDepartTime = visit.getTimestamp("DepartTime");
-                    String vProcedure = visit.getString("V_Procedure");
-                    String vResult = visit.getString("Result"); 
-                    String vPrescription = visit.getString("Prescription");
-                    String vComment = visit.getString("V_Comment");
-                    Timestamp vAuditTime = visit.getTimestamp("AuditTime");
-                    int vAuditByID = visit.getInt("AuditByID");
-
-                    Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
-                                          vPrescription, vComment, vAuditTime, vAuditByID);
-
-                    visits.add(v);
                 }
             }
             
@@ -165,45 +139,21 @@ public class FinancialServlet extends HttpServlet {
             endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
         }
         
-        ArrayList<Integer> apptID = new ArrayList<Integer>();
-        ArrayList<Visit> visits = new ArrayList<Visit>();
+        List<Appointment> appts = null;
+        List<Visit> visits = null;
         
         try {
-            // Get database connection.
-            //DatabaseConnection dbcon = new DatabaseConnection();
-            
             // Retrieve appointments by patient id. 
-            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = '"+patientID+"'");
-            while (appt.next()) {
-                apptID.add(appt.getInt("ApptID"));
-            }
+            appts = dbcon.selectAppointments("PatientID = '"+patientID+"'");
             
             // Retrieve records using ApptID.
-            for (int a : apptID) {
-                ResultSet visit;
+            for (Appointment a : appts) {
+                //ResultSet visit;
                 if (startTime.equals("") || endTime.equals("")) {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+"'");
+                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+"'");
                 } else {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+
+                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+
                         "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
-                }
-                
-                if (visit.next()) {
-                    // Create a Visit object and store the object into a list.
-                    int vApptID = visit.getInt("ApptID");
-                    Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
-                    Timestamp vDepartTime = visit.getTimestamp("DepartTime");
-                    String vProcedure = visit.getString("V_Procedure");
-                    String vResult = visit.getString("Result"); 
-                    String vPrescription = visit.getString("Prescription");
-                    String vComment = visit.getString("V_Comment");
-                    Timestamp vAuditTime = visit.getTimestamp("AuditTime");
-                    int vAuditByID = visit.getInt("AuditByID");
-
-                    Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
-                                          vPrescription, vComment, vAuditTime, vAuditByID);
-
-                    visits.add(v);
                 }
             }
             

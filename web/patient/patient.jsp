@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="ece356.Members.Patient"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +13,12 @@
         <title>Welcome, ________</title>
     </head>
     <div id="container">
-        <div id="welcome"><h1>Welcome Mr. SMD</h1></div>
+        <div id="welcome"><h1>
+                <%
+                    Patient p = (Patient) request.getAttribute("patient");
+                    out.print("Welcome " + p.getName());
+                %>
+            </h1></div>
         <div id="user_info">
             <body>This is the user information so STFU</body>
         </div>

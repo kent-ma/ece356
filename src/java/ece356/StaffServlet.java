@@ -5,11 +5,14 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Backend.Utils;
 import ece356.Members.Login;
 import ece356.Members.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -46,7 +49,7 @@ public class StaffServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
-            
+            //Utils.showErrorPage(getServletContext(), ex, request, response);
         }
         
         try
@@ -59,10 +62,7 @@ public class StaffServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-            String url = "/error.jsp";
-            request.setAttribute("exception", ex);
-            getServletContext().getRequestDispatcher(url).forward(request, response);
+            Utils.showErrorPage(getServletContext(), ex, request, response);
         }
         
         if (requestType == 0)
@@ -73,22 +73,24 @@ public class StaffServlet extends HttpServlet {
         }
         else if (requestType == 1)
         {
-            Patient record = null;
+            String c = "";
+            if (!request.getParameter("patientName").equals(""))
+                c += " and Name = '" + request.getParameter("patientName") + "'";
+            if (!request.getParameter("patientOHIP").equals(""))
+                c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
+            
+            List<Patient> record = null;
             try
             {
-                record = dbCon.selectPatient("name = '" + (String)request.getParameter("patientName") + "'");
+                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
                 
                 String url = "/staff/staff_patient_info.jsp";
-                request.setAttribute("name", record.getName());
-                request.setAttribute("hcn", record.getHealthCardNo());
+                request.setAttribute("record", record);
                 getServletContext().getRequestDispatcher(url).include(request, response);
             }
             catch (SQLException ex)
             {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-                String url = "/error.jsp";
-                request.setAttribute("exception", ex);
-                getServletContext().getRequestDispatcher(url).forward(request, response);
+                Utils.showErrorPage(getServletContext(), ex, request, response);
             }
         }
     }

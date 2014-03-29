@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             
             switch(credentials.getUserType()){
                 case 0:
-                    url = "/PatientServlet";
+                    url = "/ece356/PatientServlet";
                     break;
                 case 1:
                     url = "/StaffServlet";
@@ -86,6 +86,7 @@ public class LoginServlet extends HttpServlet {
             url = "/error.jsp";
             request.setAttribute("exception", ex);
             getServletContext().getRequestDispatcher(url).forward(request, response);
+            
             
         } catch (SQLException ex) {
             url = "/error.jsp";
