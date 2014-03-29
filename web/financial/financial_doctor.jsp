@@ -21,7 +21,7 @@
         </script>
     </head>
     <body>
-        Welcome ${name}<br/><br/>
+        Welcome ${name} <a href="/ece356/Logout">Logout</a><br/><br/>
         <h3>Search Visitation Records</h3>
         <form method="post" action="/ece356/FinancialServlet">
         <input type="hidden" name="requestType" value="3">

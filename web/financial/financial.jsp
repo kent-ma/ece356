@@ -19,7 +19,7 @@
         <div class="page-header">
             <h1>Financial Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><br>
-             <small> Welcome ${name} </small>
+             <small> Welcome ${name} </small><a href="/ece356/Logout">Logout</a>
         </div>
         <form method="post" action="/ece356/FinancialServlet">
             <input type="hidden" name="requestType" value="1">
