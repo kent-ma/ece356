@@ -71,7 +71,7 @@ public class DoctorServlet extends HttpServlet {
             searchPatient(request, response, dbcon);
         } else if (requestType == 5) {
             // From doctor_addvisitrecord.jsp
-            addVisitRecord(request, response, dbcon);
+            searchVisitsRecord(request, response, dbcon);
         } else if (requestType == 6) {
             // From financial_table.jsp
             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
@@ -83,15 +83,27 @@ public class DoctorServlet extends HttpServlet {
         
     }     
     
-    protected void  addVisitRecord(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
+    protected void  searchPatient(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
             throws ServletException, IOException {
+
+        try{
+        
             
+            
+            
+        }
+        catch (Exception ex) {
+            request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+        }
+        
     }
     
     
  private void searchVisitsRecord(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon) 
             throws ServletException, IOException {
         
+     
         String startYear = request.getParameter("start_year");
         String startMonth = request.getParameter("start_month");
         String startDay = request.getParameter("start_day");
@@ -99,6 +111,8 @@ public class DoctorServlet extends HttpServlet {
         String endMonth = request.getParameter("end_month");
         String endDay = request.getParameter("end_day");
         String patientID = request.getParameter("patient_id");
+        String patientName = request.getParameter("patient_name");
+        String prescription = request.getParameter("prescription");
         
         String startTime = "";
         String endTime = "";
@@ -118,7 +132,7 @@ public class DoctorServlet extends HttpServlet {
             //DatabaseConnection dbcon = new DatabaseConnection();
             
             // Retrieve appointments by patient id. 
-            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = '"+patientID+"'");
+            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = '"+patientID+"' AND PatientName = '" +patientName +"'");
             while (appt.next()) {
                 apptID.add(appt.getInt("ApptID"));
             }
@@ -161,14 +175,7 @@ public class DoctorServlet extends HttpServlet {
         }
     }
     
-    
-    protected void  searchPatient(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
-            throws ServletException, IOException {
-        
-    
-    }
-    
-    //grant access to another doctor 
+  //grant access to another doctor 
     protected void grantAccess(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
             throws ServletException, IOException {
         

@@ -35,15 +35,12 @@
                     <td><%= p.getHealthStatus() %></td>
                     <td><%= p.getPhoneNum()%></td>
                     <td><%= p.getDefDoctorId() %></td>
-                    <td><%= p.getAuditTime() %></td>
-                    <td><%= p.getAuditById() %></td>
                 </tr>
                 <%
             }
         %>
         </table>
-        
-        
+    
         <h3>Search Patient Records</h3>
         <form method="post" action="DoctorPatientServlet">
             Patient Name:<input type="text" name="patient_name"><br/>
