@@ -40,7 +40,9 @@ public class LegalServlet extends HttpServlet {
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
             
-            List<Visit> vs = dbcon.selectVisits("WHERE ApptID = *");
+            List<Visit> vs = dbcon.selectVisits(null);
+            request.setAttribute("visits", vs);
+            getServletContext().getRequestDispatcher("/legal/legal_table.jsp").forward(request, response);
             
             getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
