@@ -114,6 +114,32 @@ public class DatabaseConnection
         return newPatient;
     }
     
+    public List<Patient> selectPatients(String c) throws SQLException
+    {
+        ResultSet row = selectRows("Patient p, HealthCard h", null, "p.HealthCardNo = h.HealthCardNo and " + c);
+        List<Patient> records = new LinkedList<>();
+        
+        while (row.next())
+        {
+            Patient newPatient = new Patient();
+
+            newPatient.setName(row.getString("Name"));
+            newPatient.setAddress(row.getString("Address"));
+            newPatient.setDob(row.getDate("DOB"));
+            newPatient.setPatientId(row.getInt("PatientID"));
+            newPatient.setSin(row.getInt("SIN"));
+            newPatient.setHealthCardNo(row.getString("HealthCardNo"));
+            newPatient.setHealthStatus(row.getString("HealthStatus"));
+            newPatient.setPhoneNum(row.getLong("Phone"));
+            newPatient.setDefDoctorId(row.getInt("DefDoctorID"));
+            newPatient.setAuditTime(row.getDate("AuditTime"));
+            newPatient.setAuditById(row.getInt("AuditByID"));
+            
+            records.add(newPatient);
+        }
+        return records;
+    }
+    
     public List<Visit> selectVisits(String c) throws SQLException
     {
         ResultSet row = selectRows("Visit", null, c);
