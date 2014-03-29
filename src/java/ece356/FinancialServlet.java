@@ -75,13 +75,19 @@ public class FinancialServlet extends HttpServlet {
     private void searchVisitsByDoctorID(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon) 
             throws ServletException, IOException{
         
-        String startYear = request.getParameter("start_year");
-        String startMonth = request.getParameter("start_month");
-        String startDay = request.getParameter("start_day");
-        String endYear = request.getParameter("end_year");
-        String endMonth = request.getParameter("end_month");
-        String endDay = request.getParameter("end_day");
         String doctorID = request.getParameter("doctor_id");
+        
+        String startDateString = request.getParameter("start_date");
+        String[] startDateArray = startDateString.split("/");
+        String startYear = startDateArray[2];
+        String startMonth = startDateArray[0];
+        String startDay = startDateArray[1];
+        
+        String endDateString = request.getParameter("end_date");
+        String[] endDateArray = endDateString.split("/");
+        String endYear = endDateArray[2];
+        String endMonth = endDateArray[0];
+        String endDay = endDateArray[1];
         
         String startTime = "";
         String endTime = "";
@@ -123,13 +129,19 @@ public class FinancialServlet extends HttpServlet {
     private void searchVisitsByPatientID(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon) 
             throws ServletException, IOException {
         
-        String startYear = request.getParameter("start_year");
-        String startMonth = request.getParameter("start_month");
-        String startDay = request.getParameter("start_day");
-        String endYear = request.getParameter("end_year");
-        String endMonth = request.getParameter("end_month");
-        String endDay = request.getParameter("end_day");
         String patientID = request.getParameter("patient_id");
+        
+        String startDateString = request.getParameter("start_date");
+        String[] startDateArray = startDateString.split("/");
+        String startYear = startDateArray[2];
+        String startMonth = startDateArray[0];
+        String startDay = startDateArray[1];
+        
+        String endDateString = request.getParameter("end_date");
+        String[] endDateArray = endDateString.split("/");
+        String endYear = endDateArray[2];
+        String endMonth = endDateArray[0];
+        String endDay = endDateArray[1];
         
         String startTime = "";
         String endTime = "";
