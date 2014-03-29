@@ -38,7 +38,7 @@ public class FinancialDoctorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String startYear = request.getParameter("start_year");
+                String startYear = request.getParameter("start_year");
         String startMonth = request.getParameter("start_month");
         String startDay = request.getParameter("start_day");
         String endYear = request.getParameter("end_year");
@@ -99,8 +99,8 @@ public class FinancialDoctorServlet extends HttpServlet {
             }
             
             // Display the visitation records on a table.
-            request.setAttribute("visits", visits);
-            getServletContext().getRequestDispatcher("/financial/financial_table.jsp").forward(request, response);
+            request.getSession().setAttribute("visits", visits);
+            getServletContext().getRequestDispatcher("/financial_table.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
             getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
