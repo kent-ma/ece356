@@ -6,12 +6,15 @@ package ece356;
 
 import ece356.Backend.DatabaseConnection;
 import ece356.Backend.Utils;
+import ece356.Members.Appointment;
+import ece356.Members.Doctor;
 import ece356.Members.Login;
 import ece356.Members.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,7 +70,28 @@ public class StaffServlet extends HttpServlet {
         
         if (requestType == 0)
         {
+            List<Doctor> record = new LinkedList<>();
+            try
+            {
+                ResultSet result = dbCon.selectRows("Doctor", null, null);
+                
+                while (result.next())
+                {
+                    Doctor newDoctor = new Doctor();
+
+                    newDoctor.setName(result.getString("Name"));
+                    newDoctor.setDoctorId(result.getInt("DoctorID"));
+
+                    record.add(newDoctor);
+                }
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+            
             String url = "/staff/staff.jsp";
+            request.setAttribute("doctorlist", record);
             request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher(url).include(request, response);
         }
@@ -85,6 +109,26 @@ public class StaffServlet extends HttpServlet {
                 record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
                 
                 String url = "/staff/staff_patient_info.jsp";
+                request.setAttribute("record", record);
+                getServletContext().getRequestDispatcher(url).include(request, response);
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+        }
+        else if (requestType == 2)
+        {
+            String c = "a.DoctorID = " + request.getParameter("doctors");
+            if (!request.getParameter("apptTime").equals(""))
+                c += " and ApptDate = '" + request.getParameter("apptTime") + "'";
+            
+            List<Appointment> record = null;
+            try
+            {
+                record = dbCon.selectAppointments(c);
+                
+                String url = "/staff/staff_appt_info.jsp";
                 request.setAttribute("record", record);
                 getServletContext().getRequestDispatcher(url).include(request, response);
             }

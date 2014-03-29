@@ -4,6 +4,7 @@
  */
 package ece356.Members;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -13,20 +14,20 @@ import java.util.Date;
 public class Appointment {
     
     private int apptId;
-    private int doctorId;
-    private int patientId;
+    private String doctorName;
+    private String patientName;
     private int roomNumber;
-    private Date apptDate;
+    private Timestamp apptDate;
     private String apptType;
-    private Date auditTime;
+    private Timestamp auditTime;
     private int auditById;
     
-    public Appointment(int apptId, int doctorId, int patientId, int roomNumber, 
-            Date apptDate, String apptType, Date auditTime, int auditById)
+    public Appointment(int apptId, String doctorName, String patientName, int roomNumber, 
+            Timestamp apptDate, String apptType, Timestamp auditTime, int auditById)
     {
         this.apptId = apptId;
-        this.doctorId = doctorId;
-        this.patientId = patientId;
+        this.doctorName = doctorName;
+        this.patientName = patientName;
         this.roomNumber = roomNumber;
         this.apptDate = apptDate;
         this.apptType = apptType;
@@ -37,8 +38,8 @@ public class Appointment {
     public Appointment()
     {
         this.apptId = 0;
-        this.doctorId = 0;
-        this.patientId = 0;
+        this.doctorName = null;
+        this.patientName = null;
         this.roomNumber = 0;
         this.apptDate = null;
         this.apptType = null;
@@ -50,7 +51,7 @@ public class Appointment {
         return apptDate;
     }
 
-    public void setApptDate(Date apptDate) {
+    public void setApptDate(Timestamp apptDate) {
         this.apptDate = apptDate;
     }
 
@@ -82,24 +83,24 @@ public class Appointment {
         return auditTime;
     }
 
-    public void setAuditTime(Date auditTime) {
+    public void setAuditTime(Timestamp auditTime) {
         this.auditTime = auditTime;
     }
 
-    public int getDoctorId() {
-        return doctorId;
+    public String getDoctorName() {
+        return doctorName;
     }
 
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public String getPatientName() {
+        return patientName;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
     }
 
     public int getRoomNumber() {
