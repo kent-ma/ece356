@@ -22,7 +22,7 @@
             %>
             
             <%
-                if (visits == null) {
+                if ((visits == null) || (visits.size() == 0)) {
             %>
                     No matched records. <br/>
             <%
