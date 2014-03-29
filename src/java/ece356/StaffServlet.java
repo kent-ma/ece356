@@ -4,8 +4,14 @@
  */
 package ece356;
 
+import ece356.Backend.DatabaseConnection;
+import ece356.Members.Login;
+import ece356.Members.Patient;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,21 +32,47 @@ public class StaffServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        
+        // get session info
+        DatabaseConnection dbcon = null;
+        Login credentials = null;
+        int requestType = 0;
+        
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
-        } finally {            
-            out.close();
+           dbcon = (DatabaseConnection)request.getAttribute("dbcon");
+           credentials = (Login)request.getAttribute("credentials");
+           requestType = (int)request.getAttribute("requestType");
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            String url = "/error.jsp";
+            request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher(url).forward(request, response);
+        }
+        
+        // get the request to perform
+        
+        // first entry
+        if (requestType == 0)
+        {
+            String url = "/staff/staff.jsp";
+            getServletContext().getRequestDispatcher(url).forward(request, response);
+        }
+        else if (requestType == 1)
+        {
+            Patient patient = null;
+            try {
+                patient = dbcon.selectPatient("name = '" + (String)request.getAttribute("patientName") + "'");
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                String url = "/error.jsp";
+                request.setAttribute("exception", ex);
+                getServletContext().getRequestDispatcher(url).forward(request, response);
+            }
+            String url = "/staff/staff_patient_info.jsp";
+            request.setAttribute("record", patient);
+            getServletContext().getRequestDispatcher(url).forward(request, response);
         }
     }
 

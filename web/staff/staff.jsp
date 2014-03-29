@@ -4,6 +4,7 @@
     Author     : kentma
 --%>
 
+<%@page import="ece356.Members.Login"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,14 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <form method="post" action="/ece356/StaffServlet">
+            Welcome <%= ((Login)request.getAttribute("credentials")).getName() %><br/>
+            <br/>
+            Patient Name: 
+            <br/>
+            <input type="text" name="patientName">
+            <input type="hidden" name="requestType" value="1">
+            <input type="submit" value="Search">
+        </form>
     </body>
 </html>
