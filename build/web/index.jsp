@@ -22,7 +22,6 @@
         <center>
             <div class="page-header">
                 <h1>Horsepital</h1>
-                <small>Where the NSA monitors your history instead of your life</small>
                 <span class="label label-default">Where the NSA monitors your history instead of your life</span>
             </div>
         
