@@ -15,6 +15,7 @@
         <title>Visitation Records</title>
     </head>
     <body>
+        Welcome ${name}<br/><br/>
         <%--Retrieve visits from servlet--%>
         <table border="1" style="width:800px">
         <%

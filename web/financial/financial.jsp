@@ -12,9 +12,7 @@
         <title>Financial Department</title>
     </head>
     <body>
-        <!--<a href="financial_patient.jsp">Access Records by Patient ID</a><br/>
-        <a href="financial_doctor.jsp">Access Records by Doctor ID</a>-->
-        
+        Welcome ${name}<br/><br/>
         <form method="post" action="/ece356/FinancialServlet">
             <input type="hidden" name="requestType" value="1">
             <input type="submit" name="submit_doctor" value="Access Records by Doctor ID">
