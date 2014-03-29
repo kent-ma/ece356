@@ -18,14 +18,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Utils {
 
+    //Attributes
     public static final String ATTR_DBC = "dbcon";
     public static final String ATTR_CREDENTIALS = "credentials";
 
+    //Parameters
     public static final String P_NAME = "name";
     public static final String P_EXCEPTION = "exception";
 
+    
+    //End URLS
     public static final String URL_ERROR = "/error.jsp";
 
+    
+    //General Functions
     public static void showErrorPage(ServletContext context, Exception e, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute(P_EXCEPTION, e);
         context.getRequestDispatcher(URL_ERROR).forward(request, response);
