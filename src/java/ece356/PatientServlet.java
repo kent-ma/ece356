@@ -57,17 +57,7 @@ public class PatientServlet extends HttpServlet {
                 rd = request.getRequestDispatcher("/patient/patient.jsp");
                 rd.forward(request, response);
             }
-            
-            /* TODO output your page here
-             out.println("<html>");
-             out.println("<head>");
-             out.println("<title>Servlet FinancialServlet</title>");  
-             out.println("</head>");
-             out.println("<body>");
-             out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-             out.println("</body>");
-             out.println("</html>");
-             */
+             
         } catch (Exception e) {
             Logger.getLogger(PatientServlet.class.getName()).log(Level.SEVERE, null, e);
             Utils.showErrorPage(getServletContext(), e, request, response);

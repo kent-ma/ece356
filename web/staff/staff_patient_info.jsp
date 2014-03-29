@@ -48,5 +48,7 @@
             }
         %>
         </table>
+    <p><a href="/StaffServlet">Back to Staff Home</a>
+    <p><a href="/Logout">Logout</a>
     </body>
 </html>

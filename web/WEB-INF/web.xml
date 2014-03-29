@@ -24,6 +24,10 @@
         <servlet-name>StaffServlet</servlet-name>
         <servlet-class>ece356.StaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ece356.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LegalServlet</servlet-name>
         <url-pattern>/LegalServlet</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Portal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
