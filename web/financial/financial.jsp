@@ -12,7 +12,15 @@
         <title>Financial Department</title>
     </head>
     <body>
-        Welcome ${name}<br/><br/>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        
+        <div class="page-header">
+            <h1>Financial Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><br>
+             <small> Welcome ${name} </small>
+        </div>
         <form method="post" action="/ece356/FinancialServlet">
             <input type="hidden" name="requestType" value="1">
             <input type="submit" name="submit_doctor" value="Access Records by Doctor ID">

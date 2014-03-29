@@ -15,12 +15,8 @@
         <title>Visitation Records</title>
     </head>
     <body>
-        <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-        <!-- Optional theme -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-        
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         
         <div class="page-header">
@@ -78,12 +74,8 @@
         </tbody>
         </table>
 
-        Number of matched records: <%= visits.size() %>                    
-        
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        Number of matched records: <%= visits.size() %>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
-        <!--<a href="financial/financial.jsp">Start a New Search</a>-->
     </body>
 </html>
