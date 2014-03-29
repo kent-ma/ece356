@@ -68,14 +68,9 @@ public class LoginServlet extends HttpServlet {
                     break;
             }
             
-            // these should be persistent
             request.setAttribute("dbcon", dbcon);
             request.setAttribute("credentials", credentials);
-            request.setAttribute("requestType", 0);
-            
-            getServletContext().getRequestDispatcher(url).include(request, response);
-            //getServletContext().getRequestDispatcher(url).forward(request, response);
-            
+            getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             url = "/error.jsp";
