@@ -11,7 +11,6 @@ import ece356.Members.Doctor;
 import ece356.Members.Login;
 import ece356.Members.Patient;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -19,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +37,21 @@ public class StaffServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    public enum StaffRequest
+    {
+        STAFF_INIT,
+        STAFF_VIEW_PATIENTS,
+        STAFF_VIEW_APPOINTMENTS,
+        STAFF_EDIT_PATIENT,
+        STAFF_UPDATE_PATIENT,
+        STAFF_ASSIGN_DOCTOR,
+        STAFF_EDIT_APPOINTMENT,
+        STAFF_UPDATE_APPOINTMENT,
+        STAFF_NEW_PATIENT,
+        STAFF_NEW_APPOINTMENT
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -56,7 +68,7 @@ public class StaffServlet extends HttpServlet {
         }
         catch (Exception ex)
         {
-            //Utils.showErrorPage(getServletContext(), ex, request, response);
+            // assume request is 0 and go to main page
         }
         
         try
@@ -72,94 +84,27 @@ public class StaffServlet extends HttpServlet {
             Utils.showErrorPage(getServletContext(), ex, request, response);
         }
         
-        if (requestType == 0)   // init
+        if (requestType == StaffRequest.STAFF_INIT.ordinal())   // init
         {
-            List<Doctor> record = new LinkedList<>();
-            try
-            {
-                ResultSet result = dbCon.selectRows("Doctor", null, null);
-                
-                while (result.next())
-                {
-                    Doctor newDoctor = new Doctor();
-
-                    newDoctor.setName(result.getString("Name"));
-                    newDoctor.setDoctorId(result.getInt("DoctorID"));
-
-                    record.add(newDoctor);
-                }
-            }
-            catch (SQLException ex)
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
-            
-            String url = "/staff/staff.jsp";
-            getServletContext().setAttribute("doctorlist", record);
-            request.setAttribute("name", credentials.getName());
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            doInit(request, response, dbCon, credentials);
         }
-        else if (requestType == 1)  // view patients
+        
+        else if (requestType == StaffRequest.STAFF_VIEW_PATIENTS.ordinal())  // view patients
         {
-            String c = "";
-            if (!request.getParameter("patientName").equals(""))
-                c += " and Name = '" + request.getParameter("patientName") + "'";
-            if (!request.getParameter("patientOHIP").equals(""))
-                c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
-            
-            List<Patient> record = null;
-            try
-            {
-                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
-                
-                String url = "/staff/staff_patient_info.jsp";
-                request.setAttribute("record", record);
-                getServletContext().getRequestDispatcher(url).include(request, response);
-            }
-            catch (SQLException ex)
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
+            doViewPatients(request, response, dbCon, credentials);
         }
-        else if (requestType == 2)  // view appointments
+        
+        else if (requestType == StaffRequest.STAFF_VIEW_APPOINTMENTS.ordinal())  // view appointments
         {
-            String c = "a.Active = 1 and a.DoctorID = " + request.getParameter("doctors");
-            if (!request.getParameter("apptTime").equals(""))
-                c += " and ApptDate = '" + request.getParameter("apptTime") + "'";
-            
-            List<Appointment> record = null;
-            try
-            {
-                record = dbCon.selectAppointments(c);
-                
-                String url = "/staff/staff_appt_info.jsp";
-                request.setAttribute("record", record);
-                getServletContext().getRequestDispatcher(url).include(request, response);
-            }
-            catch (SQLException ex)
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
+            doViewAppointments(request, response, dbCon, credentials);
         }
-        else if (requestType == 3) // edit patient
+        
+        else if (requestType == StaffRequest.STAFF_EDIT_PATIENT.ordinal()) // edit patient
         {
-            String pId = request.getParameter("patientID");
-            Patient p = null;
-            
-            try 
-            {
-                p = dbCon.selectPatient("p.HealthCardNo = h.HealthCardNo and p.PatientID = " + pId);
-            } 
-            catch (SQLException ex) 
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
-            
-            String url = "/staff/staff_edit_patient.jsp";
-            request.setAttribute("patient", p);
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            doEditPatient(request, response, dbCon, credentials);
         }
-        else if (requestType == 4) // update patient
+        
+        else if (requestType == StaffRequest.STAFF_UPDATE_PATIENT.ordinal()) // update patient
         {
             String name = request.getParameter("name");
             String address = request.getParameter("address");
@@ -171,13 +116,6 @@ public class StaffServlet extends HttpServlet {
             String defDoc = request.getParameter("defdoc");
             String pId = request.getParameter("patientId");
             
-            String c = "";
-            if (!request.getParameter("patientName").equals(""))
-                c += " and Name = '" + request.getParameter("patientName") + "'";
-            if (!request.getParameter("patientOHIP").equals(""))
-                c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
-            
-            List<Patient> record = null;
             try
             {
                 if (!dbCon.selectRows("DoctorPatient", null, "DoctorID = " + defDoc + " and PatientID = " + pId).next())
@@ -188,76 +126,40 @@ public class StaffServlet extends HttpServlet {
                 
                 //dbCon.update
                 dbCon.updateRows("Patient p, HealthCard h", "h.Name = '" + name + "', h.Address = '" + address + "', p.Phone = " + phone + ", h.DOB = '" + dob + "', p.SIN = " + sin + ", h.HealthCardNo = " + hcn + ", p.HealthCardNo = " + hcn + ", p.DefDoctorID = " + defDoc + ", p.HealthStatus = '" + status + "', p.AuditTime = '" + dateFormat.format(date) + "', p.AuditByID = " + credentials.getLoginId(), "p.HealthCardNo = h.HealthCardNo and p.PatientID = " + pId);
-                
-                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
-                
-                String url = "/staff/staff_patient_info.jsp";
-                request.setAttribute("record", record);
-                getServletContext().getRequestDispatcher(url).include(request, response);
             }
             catch (SQLException ex)
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }
             
+            doViewPatients(request, response, dbCon, credentials);
+            
         }
-        else if (requestType == 5) // assign patient to doctor
+        
+        else if (requestType == StaffRequest.STAFF_ASSIGN_DOCTOR.ordinal()) // assign patient to doctor
         {
             String pId = request.getParameter("patientID");
             String dId = request.getParameter("doctors");
-            
-            String c = "";
-            if (!request.getParameter("patientName").equals(""))
-                c += " and Name = '" + request.getParameter("patientName") + "'";
-            if (!request.getParameter("patientOHIP").equals(""))
-                c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
-            
-            List<Patient> record = null;
-            
+
             try 
             {
                 if (!dbCon.selectRows("DoctorPatient", null, "PatientID = " + pId + " and DoctorID = " + dId).next())
-                {
                     dbCon.insertRows("DoctorPatient", "DoctorID, PatientID", dId + ", " + pId);
-                }
-                
-                record = dbCon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
-                try (PrintWriter out = response.getWriter()) 
-                {
-                    out.println("Successfully assigned patient '" + pId + "' to doctor '" + dId + "'.");
-                }
-                catch (Exception ex)
-                {
-                    Utils.showErrorPage(getServletContext(), ex, request, response);
-                }
-                String url = "/staff/staff_patient_info.jsp";
-                request.setAttribute("record", record);
-                getServletContext().getRequestDispatcher(url).include(request, response);
             } 
             catch (SQLException ex) 
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }
+            
+            doViewPatients(request, response, dbCon, credentials);
         }
-        else if (requestType == 6) // edit appointment
+        
+        else if (requestType == StaffRequest.STAFF_EDIT_APPOINTMENT.ordinal()) // edit appointment
         {
-            String aId = request.getParameter("apptID");
-            Appointment a = null;
-            
-            try 
-            {
-                a = dbCon.selectAppointments("a.ApptId = " + aId).get(0);
-            } 
-            catch (SQLException ex) 
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
-            
-            String url = "/staff/staff_edit_appt.jsp";
-            request.setAttribute("appointment", a);
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            doEditAppointment(request, response, dbCon, credentials);
         }
-        else if (requestType == 7) // update appointment
+        
+        else if (requestType == StaffRequest.STAFF_UPDATE_APPOINTMENT.ordinal()) // update appointment
         {
             String patient = request.getParameter("patient");
             String doctor = request.getParameter("doctor");
@@ -267,86 +169,220 @@ public class StaffServlet extends HttpServlet {
             String active = request.getParameter("active");
             String aId = request.getParameter("apptId");
             
-            String c = "a.Active = 1 and a.DoctorID = " + request.getParameter("doctors");
-            if (!request.getParameter("apptTime").equals(""))
-                c += " and ApptDate = '" + request.getParameter("apptTime") + "'";
-            
-            List<Appointment> record = null;
             try
             {
-                Patient p = dbCon.selectPatient("name = '" + patient + "'");
+                Patient p = dbCon.selectPatient("h.name = '" + patient + "'");
                 Doctor d = dbCon.selectDoctor("name = '" + doctor + "'");
                 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = new Date();
                 
                 dbCon.updateRows("Appointment", "PatientID = " + p.getPatientId() + ", DoctorID = " + d.getDoctorId() + ", RoomNumber = " + room + ", ApptDate = '" + time + "', ApptType = '" + type + "', AuditTime = '" + dateFormat.format(date) + "', AuditByID = " + credentials.getLoginId() + ", Active = " + active, "ApptID = " + aId);
-                
-                record = dbCon.selectAppointments(c);
-                
-                String url = "/staff/staff_appt_info.jsp";
-                request.setAttribute("record", record);
-                getServletContext().getRequestDispatcher(url).include(request, response);
+              
             }
             catch (SQLException ex)
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }
+            
+            doViewAppointments(request, response, dbCon, credentials);
         }
-        else if (requestType == 8) // new patient
+        
+        else if (requestType == StaffRequest.STAFF_NEW_PATIENT.ordinal()) // new patient
         {
-            Patient p = null;
-            
-            try 
-            {
-                ResultSet newRows = dbCon.selectRows("Login", "MAX(LoginID)", null);
-                newRows.next();
-                p = new Patient();
-                p.setPatientId(newRows.getInt("MAX(LoginID)") + 1);
-                
-                int randomHCN = 1 + (int)(Math.random() * ((999999999 - 1) + 1));
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-
-                dbCon.insertRows("Patient", "PatientID, HealthCardNo, AuditTime, AuditByID", p.getPatientId() + ", " + randomHCN + ", '" + dateFormat.format(date) + "', " + credentials.getLoginId());
-                dbCon.insertRows("HealthCard", "HealthCardNo", "" + randomHCN);
-                dbCon.insertRows("Login", "LoginID, Name, Password, UserType", p.getPatientId() + ", " + "'user_" + randomHCN + "', '" + DigestUtils.sha256Hex("user_" + randomHCN) + "', 0");
-            } 
-            catch (SQLException ex) 
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
-            
-            String url = "/staff/staff_edit_patient.jsp";
-            request.setAttribute("patient", p);
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            doNewPatient(request, response, dbCon, credentials);
         }
-        else if (requestType == 9) // new appointment
+        
+        else if (requestType == StaffRequest.STAFF_NEW_APPOINTMENT.ordinal()) // new appointment
         {
-            Appointment a = null;
-            
-            try 
-            {
-                ResultSet newRows = dbCon.selectRows("Appointment", "MAX(ApptID)", null);
-                newRows.next();
-                a = new Appointment();
-                a.setApptId(newRows.getInt("MAX(ApptID)") + 1);
-                
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-
-                dbCon.insertRows("Appointment", "ApptID, AuditTime, AuditByID, Active", a.getApptId() + ", '" + dateFormat.format(date) + "', " + credentials.getLoginId() + ", 1");
-            } 
-            catch (SQLException ex) 
-            {
-                Utils.showErrorPage(getServletContext(), ex, request, response);
-            }
-            
-            String url = "/staff/staff_edit_appt.jsp";
-            request.setAttribute("appointment", a);
-            getServletContext().getRequestDispatcher(url).include(request, response);
+            doNewAppointment(request, response, dbCon, credentials);
         }
     }
+    
+    public void doInit(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        List<Doctor> record = new LinkedList<>();
+        try
+        {
+            ResultSet result = dbCon.selectRows("Doctor", null, null);
+
+            while (result.next())
+            {
+                Doctor newDoctor = new Doctor();
+
+                newDoctor.setName(result.getString("Name"));
+                newDoctor.setDoctorId(result.getInt("DoctorID"));
+
+                record.add(newDoctor);
+            }
+        }
+        catch (SQLException ex)
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/staff/staff.jsp";
+        getServletContext().setAttribute("doctorlist", record);
+        request.setAttribute("name", credentials.getName());
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+    public void doViewPatients(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        String c = "";
+        if (!request.getParameter("patientName").equals(""))
+            c += " and Name = '" + request.getParameter("patientName") + "'";
+        if (!request.getParameter("patientOHIP").equals(""))
+            c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
+
+        List<Patient> record = null;
+        try
+        {
+            record = dbCon.selectPatients(" and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
+
+            String url = "/staff/staff_patient_info.jsp";
+            request.setAttribute("record", record);
+            getServletContext().getRequestDispatcher(url).include(request, response);
+        }
+        catch (SQLException ex)
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+    }
+    
+    public void doViewAppointments(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        String c = "a.Active = 1 and a.DoctorID = " + request.getParameter("doctors");
+        if (!request.getParameter("apptTime").equals(""))
+            c += " and ApptDate = '" + request.getParameter("apptTime") + "'";
+
+        List<Appointment> record = null;
+        try
+        {
+            record = dbCon.selectAppointments(c);
+
+            String url = "/staff/staff_appt_info.jsp";
+            request.setAttribute("record", record);
+            getServletContext().getRequestDispatcher(url).include(request, response);
+        }
+        catch (SQLException ex)
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+    }
+    
+    public void doEditPatient(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        String pId = request.getParameter("patientID");
+        Patient p = null;
+
+        try 
+        {
+            p = dbCon.selectPatient("p.HealthCardNo = h.HealthCardNo and p.PatientID = " + pId);
+        } 
+        catch (SQLException ex) 
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/staff/staff_edit_patient.jsp";
+        request.setAttribute("patient", p);
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+    public void doEditAppointment(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        String aId = request.getParameter("apptID");
+        Appointment a = null;
+
+        try 
+        {
+            a = dbCon.selectAppointments("a.ApptId = " + aId).get(0);
+        } 
+        catch (SQLException ex) 
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/staff/staff_edit_appt.jsp";
+        request.setAttribute("appointment", a);
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+    public void doNewPatient(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        Patient p = null;
+            
+        try 
+        {
+            ResultSet newRows = dbCon.selectRows("Login", "MAX(LoginID)", null);
+            newRows.next();
+            p = new Patient();
+            p.setPatientId(newRows.getInt("MAX(LoginID)") + 1);
+
+            int randomHCN = 1 + (int)(Math.random() * ((999999999 - 1) + 1));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+
+            dbCon.insertRows("Patient", "PatientID, HealthCardNo, AuditTime, AuditByID", p.getPatientId() + ", " + randomHCN + ", '" + dateFormat.format(date) + "', " + credentials.getLoginId());
+            dbCon.insertRows("HealthCard", "HealthCardNo", "" + randomHCN);
+            dbCon.insertRows("Login", "LoginID, Name, Password, UserType", p.getPatientId() + ", " + "'user_" + randomHCN + "', '" + DigestUtils.sha256Hex("user_" + randomHCN) + "', 0");
+        } 
+        catch (SQLException ex) 
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/staff/staff_edit_patient.jsp";
+        request.setAttribute("patient", p);
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+    public void doNewAppointment(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        Appointment a = null;
+            
+        try 
+        {
+            ResultSet newRows = dbCon.selectRows("Appointment", "MAX(ApptID)", null);
+            newRows.next();
+            a = new Appointment();
+            a.setApptId(newRows.getInt("MAX(ApptID)") + 1);
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+
+            dbCon.insertRows("Appointment", "ApptID, AuditTime, AuditByID, Active", a.getApptId() + ", '" + dateFormat.format(date) + "', " + credentials.getLoginId() + ", 1");
+        } 
+        catch (SQLException ex) 
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/staff/staff_edit_appt.jsp";
+        request.setAttribute("appointment", a);
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

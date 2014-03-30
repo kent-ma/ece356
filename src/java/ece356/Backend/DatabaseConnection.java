@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class DatabaseConnection 
 {
-    public static final String url = "jdbc:mysql://eceweb.uwaterloo.ca:3306/";
+    public static final String url = "jdbc:mysql://localhost:3306/";
     public static final String user = "user_dwbinnie";
     public static final String pwd = "user_dwbinnie";
     public static final String db = "4a1w";
@@ -94,7 +94,7 @@ public class DatabaseConnection
     
     public Patient selectPatient(String c) throws SQLException
     {
-        ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName , d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
+        ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName, d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
         Patient newPatient = new Patient();
         
         row.next();
