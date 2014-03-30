@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    
     <body>
         <h3>Search Visitation Records</h3>
         <form method="post" action="DoctorPatientServlet">
@@ -35,5 +36,12 @@
             <br/>            
             <input type="submit" value="Search">
         </form>
+        
+        
+        
+        
+        
+        
+    <p><a href="/Logout">Logout</a>
     </body>
 </html>

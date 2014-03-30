@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList" %>
+<%@page import="java.util.List" %>
 <%@page import="ece356.Members.Patient" %>
 <!DOCTYPE html>
 <html>
@@ -16,11 +17,16 @@
     <body>
         
         <%-- get all the patients record under the doctor--%>
-        <table border="1" style="width:800px">
-        <%
-            ArrayList<Patient> patients = (ArrayList<Patient>)session.getAttribute("patients");
+        My Patients: <select name="patients"> <%
+            List<Patient> patients = (List<Patient>)request.getAttribute("record");
             %>
-            
+            <% for (Patient d : patients) { %>
+            <option value="<%= d.getPatientId() %>"><%= d.getName() %></option>
+            <% } %>
+            </select><br>
+        
+        <table border="1" style="width:800px">
+           
             Number of matched records: <%= patients.size() %>
             <br/>
             <br/>
@@ -34,7 +40,7 @@
                     <td><%= p.getHealthCardNo() %></td>
                     <td><%= p.getHealthStatus() %></td>
                     <td><%= p.getPhoneNum()%></td>
-                    <td><%= p.getDefDoctorId() %></td>
+                    <td><%= p.getDefDoctorId() %></td>                    
                 </tr>
                 <%
             }

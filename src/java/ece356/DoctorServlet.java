@@ -5,6 +5,8 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Backend.Utils;
+import ece356.Members.Doctor;
 import ece356.Members.Login;
 import ece356.Members.Patient;
 import ece356.Members.Visit;
@@ -14,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,15 +64,69 @@ public class DoctorServlet extends HttpServlet {
             // To doctor_addvisitrecord
             getServletContext().getRequestDispatcher("/doctor/doctor_addvisitrecord.jsp").forward(request, response);
         } else if (requestType == 2) {
+            
+            //Doctor can grant access to another doctor
             // To doctor_grantaccess.jsp
+            List<Doctor> record = new LinkedList<>();
+            List<Patient> recordPatient = null;
+            //List<Patient> patientRecord = dbcon.selectPatients("DoctorID =");
+            try
+            {
+                
+                recordPatient = dbcon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID = " + credentials.getLoginId() + ")");               
+                String url = "/doctor/doctor_grantaccess.jsp";
+                request.setAttribute("record", recordPatient);
+                
+                ResultSet result = dbcon.selectRows("Doctor", null, null);
+                while (result.next())
+                {
+                    Doctor newDoctor = new Doctor();
+                    newDoctor.setName(result.getString("Name"));
+                    newDoctor.setDoctorId(result.getInt("DoctorID"));
+                    record.add(newDoctor);
+                }
+                
+                //TODO
+                //Insert a new patient + doctor record for another doctor when submit is clicked
+                //String patientID = request.getParameter("patientID");
+                //String docID = request.getParameter("doctorID");
+                //String value = docID + "," + patientID;
+                //boolean grantSuccess = dbcon.insertRows("DoctorPatient", "DoctorID, PatientID","");
+                
+                
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+
+            getServletContext().setAttribute("doctorlist", record);
+            //getServletContext().setAttribute("patientlist", patientRecord);
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_grantaccess.jsp").forward(request, response);
-        }else if (requestType == 3) {
+        }
+        
+        else if (requestType == 3) {
+            //Doctor can search patient here
             // To doctor_searchpatient.jsp
+            List<Patient> record = null;
+            try
+            {
+                record = dbcon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID = " + credentials.getLoginId() + ")");               
+                String url = "/doctor/doctor_searchpatient.jsp";
+                request.setAttribute("record", record);
+                getServletContext().getRequestDispatcher(url).include(request, response);
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+            
             getServletContext().getRequestDispatcher("/doctor/doctor_searchpatient.jsp").forward(request, response);
         }  
         else if (requestType == 4) {
             // From doctor_searchpatient.jsp
-            searchPatient(request, response, dbcon);
+            grantAccess(request, response, dbcon);
         } else if (requestType == 5) {
             // From doctor_addvisitrecord.jsp
             searchVisitsRecord(request, response, dbcon);
@@ -86,11 +144,7 @@ public class DoctorServlet extends HttpServlet {
     protected void  searchPatient(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
             throws ServletException, IOException {
 
-        try{
-        
-            
-            
-            
+        try{       
         }
         catch (Exception ex) {
             request.setAttribute("exception", ex);

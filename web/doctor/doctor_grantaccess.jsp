@@ -5,12 +5,12 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="ece356.DoctorServlet"%>
 <%@page import="ece356.Backend.DatabaseConnection"%>
 <%@page import="ece356.Members.Patient"%>
 <%@page import="ece356.Members.Doctor"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList" %>
 <%@page import="ece356.Members.Patient" %>
 <!DOCTYPE html>
 <html>
@@ -20,22 +20,23 @@
     </head>
     <body>
         <jsp:useBean id="Doctor" class="ece356.Members.Doctor" scope="session"/>
-        Hello Dr.<%= Doctor.getName() %><br/>   
+        Hello Dr.${name}<br/>   
         Granting my patient:
-        Patient Name: <select name="patientName">
-                      <%
-            ArrayList<Patient> patients = (ArrayList<Patient>)session.getAttribute("patients");
+            My Patients: <select name="patients"> <%
+            List<Patient> patients = (List<Patient>)request.getAttribute("record");
             %>
-            
-            </select><br><br>
-        
-        access to Dr.
-        <select name="doctorName">
-                      <%
-            ArrayList<Doctor> doctors = (ArrayList<Doctor>)session.getAttribute("doctors");
-            %>
-            
-            </select>
-        <input type="grant" value="Grant Access">
+            <% for (Patient d : patients) { %>
+            <option value="<%= d.getPatientId() %>"><%= d.getName() %></option>
+            <% } %>
+            </select><br>
+<br>
+            <br> 
+        access to Dr.<select name="doctors"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
+            <% for (Doctor d : doctors) { %>
+            <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>
+            <% } %>
+            </select><br>
+            <input type="hidden" name="requestType" value="4">
+            <input type="submit" value="Grant Access">
     </body>
 </html>
