@@ -116,15 +116,28 @@ public class StaffServlet extends HttpServlet {
             String defDoc = request.getParameter("defdoc");
             String pId = request.getParameter("patientId");
             
+            // for settings user names for new patients
+            String[] subNames = name.split(" ");
+            String userName = "";
+            for (int i = 0; i < subNames.length - 1; i++)
+            {
+                userName += subNames[i].substring(0, 1).toLowerCase();
+            }
+            userName += subNames[subNames.length - 1].toLowerCase();
+            
             try
             {
+                // ensure the default doctor has access to the patient
                 if (!dbCon.selectRows("DoctorPatient", null, "DoctorID = " + defDoc + " and PatientID = " + pId).next())
                     dbCon.insertRows("DoctorPatient", "DoctorID, PatientID", defDoc + ", " + pId);
+                
+                Login tempReset = dbCon.selectLogin("LoginID = " + pId);
+                if (DigestUtils.sha256Hex(tempReset.getName()).equals(tempReset.getPassword()))
+                    dbCon.updateRows("Login", "Name = '" + userName + "'", "LoginID = " + tempReset.getLoginId());
                 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = new Date();
                 
-                //dbCon.update
                 dbCon.updateRows("Patient p, HealthCard h", "h.Name = '" + name + "', h.Address = '" + address + "', p.Phone = " + phone + ", h.DOB = '" + dob + "', p.SIN = " + sin + ", h.HealthCardNo = " + hcn + ", p.HealthCardNo = " + hcn + ", p.DefDoctorID = " + defDoc + ", p.HealthStatus = '" + status + "', p.AuditTime = '" + dateFormat.format(date) + "', p.AuditByID = " + credentials.getLoginId(), "p.HealthCardNo = h.HealthCardNo and p.PatientID = " + pId);
             }
             catch (SQLException ex)
@@ -172,7 +185,7 @@ public class StaffServlet extends HttpServlet {
             try
             {
                 Patient p = dbCon.selectPatient("h.name = '" + patient + "'");
-                Doctor d = dbCon.selectDoctor("name = '" + doctor + "'");
+                Doctor d = dbCon.selectDoctor("DoctorID = '" + doctor + "'");
                 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = new Date();
@@ -203,8 +216,10 @@ public class StaffServlet extends HttpServlet {
             DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
     {
         List<Doctor> record = new LinkedList<>();
+        String staffName = "";
         try
         {
+            // get a list of doctors for use in the servlet
             ResultSet result = dbCon.selectRows("Doctor", null, null);
 
             while (result.next())
@@ -216,6 +231,8 @@ public class StaffServlet extends HttpServlet {
 
                 record.add(newDoctor);
             }
+            
+            staffName = dbCon.selectStaff("StaffID = " + credentials.getLoginId()).getName();
         }
         catch (SQLException ex)
         {
@@ -224,7 +241,7 @@ public class StaffServlet extends HttpServlet {
 
         String url = "/staff/staff.jsp";
         getServletContext().setAttribute("doctorlist", record);
-        request.setAttribute("name", credentials.getName());
+        request.setAttribute("name", staffName);
         getServletContext().getRequestDispatcher(url).include(request, response);
     }
     
@@ -318,6 +335,7 @@ public class StaffServlet extends HttpServlet {
             DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
     {
         Patient p = null;
+        String password = "";
             
         try 
         {
@@ -326,9 +344,13 @@ public class StaffServlet extends HttpServlet {
             p = new Patient();
             p.setPatientId(newRows.getInt("MAX(LoginID)") + 1);
 
+            // get a random health card number for temporary use
+            // will also be temporary password (user_HCN)
             int randomHCN = 1 + (int)(Math.random() * ((999999999 - 1) + 1));
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
+            
+            password = "user_" + randomHCN;
 
             dbCon.insertRows("Patient", "PatientID, HealthCardNo, AuditTime, AuditByID", p.getPatientId() + ", " + randomHCN + ", '" + dateFormat.format(date) + "', " + credentials.getLoginId());
             dbCon.insertRows("HealthCard", "HealthCardNo", "" + randomHCN);
@@ -341,6 +363,7 @@ public class StaffServlet extends HttpServlet {
 
         String url = "/staff/staff_edit_patient.jsp";
         request.setAttribute("patient", p);
+        request.setAttribute("password", password);
         getServletContext().getRequestDispatcher(url).include(request, response);
     }
     

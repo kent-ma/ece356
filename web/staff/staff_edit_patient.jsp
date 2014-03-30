@@ -27,12 +27,15 @@
             SIN:            <input type="text" name="sin" value="<%= p.getSin() %>"><br>
             OHIP:           <input type="text" name="hcn" value="<%= p.getHealthCardNo() %>"><br>
             Status:          <input type="text" name="status" value="<%= p.getHealthStatus() %>"><br>
-            Default Doctor: <select name="defdoc"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
+            Default Doctor: <select name="defdoc"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %><br>
             <% for (Doctor d : doctors) { %>
                 <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>
             <% } %>
             </select>
             <input type="submit" value="Submit Changes">
+            <% if (request.getAttribute("password") != null) { %>
+            <p>Password:       <%= (String)request.getAttribute("password") %>
+            <% } %>
         </form>
     </body>
 </html>
