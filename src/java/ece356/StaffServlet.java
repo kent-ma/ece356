@@ -29,15 +29,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author devin
  */
 public class StaffServlet extends HttpServlet {
-
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
+   
     public enum StaffRequest
     {
         STAFF_INIT,
@@ -52,6 +44,13 @@ public class StaffServlet extends HttpServlet {
         STAFF_NEW_APPOINTMENT
     }
     
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -393,19 +392,6 @@ public class StaffServlet extends HttpServlet {
         request.setAttribute("appointment", a);
         getServletContext().getRequestDispatcher(url).include(request, response);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
