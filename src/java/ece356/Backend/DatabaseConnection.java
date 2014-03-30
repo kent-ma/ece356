@@ -166,7 +166,7 @@ public class DatabaseConnection
     
     public List<Appointment> selectAppointments(String c) throws SQLException
     {
-        ResultSet row = selectRows("Appointment a, Patient p, Doctor d, HealthCard h", "a.ApptID, a.RoomNumber, a.ApptDate, a.ApptType, a.AuditTime, a.AuditById, d.Name as dName, h.Name as pName", "p.PatientID = a.PatientID and d.DoctorID = a.DoctorID and p.HealthCardNo = h.HealthCardNo and " + c);
+        ResultSet row = selectRows("Appointment a, Patient p, Doctor d, HealthCard h", "a.ApptID, a.RoomNumber, a.ApptDate, a.ApptType, a.AuditTime, a.AuditById, a.Active, d.Name as dName, h.Name as pName", "p.PatientID = a.PatientID and d.DoctorID = a.DoctorID and p.HealthCardNo = h.HealthCardNo and " + c);
         List<Appointment> records = new LinkedList<>();
         
         while (row.next())
@@ -181,6 +181,7 @@ public class DatabaseConnection
             newVisit.setApptType(row.getString("ApptType"));
             newVisit.setAuditTime(row.getTimestamp("AuditTime"));
             newVisit.setAuditById(row.getInt("AuditByID"));
+            newVisit.setActive(row.getInt("Active"));
             
             records.add(newVisit);
         }

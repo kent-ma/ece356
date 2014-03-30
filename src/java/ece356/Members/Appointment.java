@@ -21,9 +21,10 @@ public class Appointment {
     private String apptType;
     private Timestamp auditTime;
     private int auditById;
+    private int active;
     
     public Appointment(int apptId, String doctorName, String patientName, int roomNumber, 
-            Timestamp apptDate, String apptType, Timestamp auditTime, int auditById)
+            Timestamp apptDate, String apptType, Timestamp auditTime, int auditById, int active)
     {
         this.apptId = apptId;
         this.doctorName = doctorName;
@@ -33,6 +34,7 @@ public class Appointment {
         this.apptType = apptType;
         this.auditTime = auditTime;
         this.auditById = auditById;
+        this.active = active;
     }
     
     public Appointment()
@@ -45,6 +47,15 @@ public class Appointment {
         this.apptType = null;
         this.auditTime = null;
         this.auditById = 0;
+        this.active = 0;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 
     public Date getApptDate() {

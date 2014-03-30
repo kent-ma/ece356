@@ -33,6 +33,7 @@
                 <td>OHIP Number</td>
                 <td>Status</td>
                 <td>Assign to Doctor</td>
+                <td>Edit Info</td>
             </tr>
             <%
             for (Patient p : patients) {
@@ -59,11 +60,27 @@
                             <input type="submit" value="Assign">
                         </form>
                     </td>
+                    <td>
+                        <form method="post" action="StaffServlet">
+                            <input type="hidden" name="patientName" value="<%= request.getParameter("patientName") %>">
+                            <input type="hidden" name="patientOHIP" value="<%= request.getParameter("patientOHIP") %>">
+                            <input type="hidden" name="patientID" value="<%= p.getPatientId() %>">
+                            <input type="hidden" name="requestType" value="3">
+                            <input type="submit" value="Edit Info">
+                        </form>
+                    </td>
                 </tr>
                 <%
             }
         %>
         </table>
+    <p>
+    <form method="post" action="StaffServlet">
+    <input type="hidden" name="patientName" value="<%= request.getParameter("patientName") %>">
+    <input type="hidden" name="patientOHIP" value="<%= request.getParameter("patientOHIP") %>">
+    <input type="hidden" name="requestType" value="8">
+    <input type="submit" value="New Patient">
+    </form>
     <p><a href="/StaffServlet">Back to Staff Home</a>
     <p><a href="/Logout">Logout</a>
     </body>

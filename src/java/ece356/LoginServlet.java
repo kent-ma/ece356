@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
                     url = "/ece356/PatientServlet";
                     break;
                 case 1:
-                    url = "/ece356/StaffServlet";
+                    url = "StaffServlet";
                     break;
                 case 2:
                     url = "/ece356/DoctorServlet";
