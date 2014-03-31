@@ -58,9 +58,11 @@ public class DoctorServlet extends HttpServlet {
             requestType = Integer.parseInt(request.getParameter("requestType"));
         }   
         if (requestType == 0) {
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
         } else if (requestType == 1) {
             // To doctor_addvisitrecord
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_addvisitrecord.jsp").forward(request, response);
         } else if (requestType == 2) {  
             //Doctor can grant access to another doctor
@@ -161,6 +163,7 @@ public class DoctorServlet extends HttpServlet {
             String patientID = request.getParameter("patientID");
             searchVisitRecord(patientID, request, response, dbcon);
         } else if (requestType == 7) {
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_searchpatient.jsp").forward(request, response);
         } else if (requestType == 8) {
             // From doctor_searchpatient.jsp
