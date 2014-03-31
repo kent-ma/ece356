@@ -153,7 +153,7 @@ public class DoctorServlet extends HttpServlet {
             // From doctor_viewpatient.jsp
             // Return a list of records for that patient.
             String patientID = request.getParameter("patientID");
-            searchVisitRecord(patientID, request, response, dbcon);
+            searchVisitRecord(patientID, request, response, dbcon, credentials);
         } else if (requestType == 7) {
             request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_searchpatient.jsp").forward(request, response);
@@ -179,7 +179,7 @@ public class DoctorServlet extends HttpServlet {
             
             visitDate = year+"-"+month+"-"+day;
             
-            searchVisitsWithCriteria(patientName, visitDate, diagnosis, commentKeyword, prescriptions, surgery, request, response, dbcon);
+            searchVisitsWithCriteria(patientName, visitDate, diagnosis, commentKeyword, prescriptions, surgery, request, response, dbcon, credentials);
         } else if (requestType == 9) {
             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
         }
@@ -188,7 +188,7 @@ public class DoctorServlet extends HttpServlet {
      public void searchVisitsWithCriteria(String patientName, String visitDate, 
              String diagnosis, String commentKeyword, String prescriptions, 
              String surgery, HttpServletRequest request, 
-             HttpServletResponse response, DatabaseConnection dbcon) 
+             HttpServletResponse response, DatabaseConnection dbcon, Login credentials) 
              throws ServletException, IOException {
          
          List<Appointment> appts = null;
@@ -244,6 +244,7 @@ public class DoctorServlet extends HttpServlet {
             }
             
             request.setAttribute("visits", visits);
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_recordtable.jsp").forward(request, response);
             
         } catch (SQLException ex) {
@@ -317,7 +318,7 @@ public class DoctorServlet extends HttpServlet {
         }
  
     //search visitation record from the selected patient
-    public void searchVisitRecord(String patientID, HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
+    public void searchVisitRecord(String patientID, HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon, Login credentials)
                throws ServletException, IOException {  
         
         List<Appointment> appts = null;
@@ -329,6 +330,7 @@ public class DoctorServlet extends HttpServlet {
             
             // Display the visitation records on a table.
             request.setAttribute("visits", visits);
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_recordtable.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("exception", ex);
