@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>STAFF - Edit Appointment</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.9.1.js"></script>
         <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -46,7 +47,7 @@
         <% Appointment a = (Appointment)request.getAttribute("appointment"); %>
         <input type="hidden" name="apptId" value="<%= a.getApptId() %>">
         <input type="hidden" name="doctors" value="<%= request.getParameter("doctors") %>">
-        <input type="hidden" name="apptTime" value="<%= request.getParameter("apptDate") %>">
+        <input type="hidden" name="apptDate" value="<%= request.getParameter("apptDate") %>">
         <input type="hidden" name="requestType" value="7">
             Patient:       <input type="text" name="patient" value="<%= a.getPatientName() %>"><br>
             Doctor:        <select name="doctor"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>

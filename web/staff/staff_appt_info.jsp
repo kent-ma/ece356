@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>STAFF - Appointment Info</title>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -56,7 +56,7 @@
                     <td>
                         <form method="post" action="StaffServlet">
                             <input type="hidden" name="doctors" value="<%= request.getParameter("doctors") %>">
-                            <input type="hidden" name="apptTime" value="<%= request.getParameter("apptTime") %>">
+                            <input type="hidden" name="apptDate" value="<%= request.getParameter("apptDate") %>">
                             <input type="hidden" name="apptID" value="<%= a.getApptId() %>">
                             <input type="hidden" name="requestType" value="6">
                             <input type="submit" value="Edit Appointment">
@@ -75,6 +75,6 @@
     <input type="hidden" name="requestType" value="9">
     <input type="submit" value="New Appointment">
     </form>
-    <p><a href="/StaffServlet">Back to Staff Home</a>
+    <p><a href="StaffServlet">Back to Staff Home</a>
     </body>
 </html>

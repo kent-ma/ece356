@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>STAFF - Patient Info</title>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -94,6 +94,6 @@
     <input type="hidden" name="requestType" value="8">
     <input type="submit" value="New Patient">
     </form>
-    <p><a href="/ece356/StaffServlet">Back to Staff Home</a>
+    <p><a href="StaffServlet">Back to Staff Home</a>
     </body>
 </html>
