@@ -208,22 +208,29 @@ public class DoctorServlet extends HttpServlet {
             
             // Get appt ids using patient ids. 
             appts = dbcon.selectAppointments("p.PatientID = "+"'"+patientID+"'");
-            int[] apptIDs = new int[appts.size()];
-            for (int i = 0; i < appts.size(); i++) {
-                apptIDs[i] = appts.get(i).getApptId();
-            }
-            
-            for (int i = 0; i < apptIDs.length; i++) {
-                sqlApptID = sqlApptID+"'"+apptIDs[i]+"'";
-                if (i != (apptIDs.length - 1)) {
-                    sqlApptID = sqlApptID+" OR ApptID = ";
-                } else {
-                    sqlApptID = sqlApptID+")";
+            if (appts.size() == 0) {
+                sqlApptID = "";
+            } else {
+                int[] apptIDs = new int[appts.size()];
+                for (int i = 0; i < appts.size(); i++) {
+                    apptIDs[i] = appts.get(i).getApptId();
+                }
+
+                for (int i = 0; i < apptIDs.length; i++) {
+                    sqlApptID = sqlApptID+"'"+apptIDs[i]+"'";
+                    if (i != (apptIDs.length - 1)) {
+                        sqlApptID = sqlApptID+" OR ApptID = ";
+                    } else {
+                        sqlApptID = sqlApptID+")";
+                    }
                 }
             }
-            
             // Format final query. 
-            sql = sqlApptID+" OR "+sqlTime+" OR "+sqlProcedure+" OR "+sqlResult+" OR "+sqlPrescription+" OR "+sqlComment+";";
+            if (sqlApptID.equals("")) {
+                sql = sqlTime+" OR "+sqlProcedure+" OR "+sqlResult+" OR "+sqlPrescription+" OR "+sqlComment+";";
+            } else {
+                sql = sqlApptID+" OR "+sqlTime+" OR "+sqlProcedure+" OR "+sqlResult+" OR "+sqlPrescription+" OR "+sqlComment+";";
+            }
             ResultSet rsVisits = dbcon.selectRows("Visit", null, sql);
             
             while (rsVisits.next()) {
