@@ -13,6 +13,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="/bootstrap/js/jquery-ui-timepicker-addon.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script>
+        $(function() {
+          $( ".datepicker" ).datepicker();
+        });
+        $(function() {
+          $( ".timepicker" ).timepicker();
+        });
+        </script>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -20,6 +33,7 @@
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <script src="/scripts/jquery.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
         
         <div class="page-header">
             <h1>Staff Department</h1>
@@ -38,7 +52,7 @@
         </form>
         <p><b>Get Appointment Info</b>
         <form method="post" action="StaffServlet">
-            Appt Time: <input type="datetime" name="apptTime"><br>
+            Appt Time: <input type="text" name="apptDate" class="datepicker"><br>
             Doctor Name: <select name="doctors"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
             <% for (Doctor d : doctors) { %>
             <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>

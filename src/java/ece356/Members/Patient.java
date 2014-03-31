@@ -90,4 +90,11 @@ public class Patient {
     public void setDefDoctorName(String defDoctorName) {
         this.defDoctorName = defDoctorName;
     }
+    
+    public String getJQDOB()
+    {
+        if (this.dob == null) return null;
+        String[] dirtyDate = this.dob.toString().split(" ");
+        return dirtyDate[0].split("-")[1] + "/" + dirtyDate[0].split("-")[2] + "/" + dirtyDate[0].split("-")[0];
+    }
 }

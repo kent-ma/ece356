@@ -108,7 +108,7 @@ public class StaffServlet extends HttpServlet {
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
-            String dob = request.getParameter("dob");
+            String dob = Utils.parseDate(request.getParameter("dob"));
             String sin = request.getParameter("sin");
             String hcn = request.getParameter("hcn");
             String status = request.getParameter("status");
@@ -176,7 +176,7 @@ public class StaffServlet extends HttpServlet {
             String patient = request.getParameter("patient");
             String doctor = request.getParameter("doctor");
             String room = request.getParameter("room");
-            String time = request.getParameter("time");
+            String time = Utils.parseDate(request.getParameter("date")) + " " + request.getParameter("time") + ":00";
             String type = request.getParameter("type");
             String active = request.getParameter("active");
             String aId = request.getParameter("apptId");
@@ -272,8 +272,8 @@ public class StaffServlet extends HttpServlet {
             DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
     {
         String c = "a.Active = 1 and a.DoctorID = " + request.getParameter("doctors");
-        if (!request.getParameter("apptTime").equals(""))
-            c += " and ApptDate = '" + request.getParameter("apptTime") + "'";
+        if (!request.getParameter("apptDate").equals(""))
+            c += " and ApptDate >= '" + Utils.parseDate(request.getParameter("apptDate")) + " 00:00:00' AND ApptDate <= '" + Utils.parseDate(request.getParameter("apptDate")) + " 23:59:59'";
 
         List<Appointment> record = null;
         try
