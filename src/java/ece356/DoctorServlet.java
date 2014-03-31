@@ -255,8 +255,8 @@ public class DoctorServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/doctor/doctor_recordtable.jsp").forward(request, response);
             
         } catch (SQLException ex) {
-            request.setAttribute("exception", ex);
-            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+            //request.setAttribute("exception", ex);
+            getServletContext().getRequestDispatcher("/doctor/doctor_searchpatient.jsp").forward(request, response);
         }
      }
     
@@ -319,8 +319,8 @@ public class DoctorServlet extends HttpServlet {
              } 
             catch (SQLException ex) 
             {
-                request.setAttribute("exception", ex);
-                getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+                //request.setAttribute("exception", ex);
+                getServletContext().getRequestDispatcher("/doctor/doctor_addvisitrecord.jsp").forward(request, response);
             }
         }
  
