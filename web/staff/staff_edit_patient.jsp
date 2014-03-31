@@ -13,6 +13,20 @@
     <head>
     </head>
     <body>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Staff Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <a href="/ece356/Logout">Logout</a>
+            </div>            
+        </div>
+        
         <h3>Editing Patient</h3>
         <form method="post" action="StaffServlet">
         <% Patient p = (Patient)request.getAttribute("patient"); %>

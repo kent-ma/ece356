@@ -15,15 +15,26 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Staff Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <a href="/ece356/Logout">Logout</a>
+            </div>            
+        </div>
+        
         <%--Retrieve visits from servlet--%>
-        <table border="1" style="width:800px">
+        <table border="1" style="width:800px" class="table table-striped">
         <%
             List<Patient> patients = (List<Patient>)request.getAttribute("record");
             %>
-            
-            Number of matched records: <%= patients.size() %>
-            <br/>
-            <br/>
+            <thead>
             <tr>
                 <td>Name</td>
                 <td>Address</td>
@@ -35,6 +46,7 @@
                 <td>Assign to Doctor</td>
                 <td>Edit Info</td>
             </tr>
+            </thead>
             <%
             for (Patient p : patients) {
                 %>
@@ -74,6 +86,7 @@
             }
         %>
         </table>
+        Number of matched records: <%= patients.size() %>
     <p>
     <form method="post" action="StaffServlet">
     <input type="hidden" name="patientName" value="<%= request.getParameter("patientName") %>">
@@ -82,6 +95,5 @@
     <input type="submit" value="New Patient">
     </form>
     <p><a href="/StaffServlet">Back to Staff Home</a>
-    <p><a href="/Logout">Logout</a>
     </body>
 </html>

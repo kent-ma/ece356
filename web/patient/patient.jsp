@@ -22,8 +22,21 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome, ________</title>
     </head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Patient Info</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! <% out.print(p.getName());%>
+            <a href="/ece356/Logout">Logout</a>
+            </div>            
+        </div>
+    
     <div id="container">
-        <div id="welcome"><h1>Welcome <% out.print(p.getName());%></h1></div><br>
         <div id="user_info">
             <form>
                 Name: <%out.print(p.getName());%><br>
