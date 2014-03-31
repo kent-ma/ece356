@@ -23,6 +23,10 @@
          <form method="post" action="/ece356/DoctorServlet">
             <input type="hidden" name="requestType" value="3">
             <input type="submit" name="doctor_viewpatient" value="View Patient">
-        </form>    
+        </form> 
+        <form method="post" action="/ece356/DoctorServlet">
+            <input type="hidden" name="requestType" value="7">
+            <input type="submit" name="doctor_searchvisits" value="Search Visits">
+        </form>  
 </body>
 </html>
