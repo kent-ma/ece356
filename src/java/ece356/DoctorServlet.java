@@ -174,6 +174,19 @@ public class DoctorServlet extends HttpServlet {
             String prescriptions = request.getParameter("prescriptions");
             String surgery = request.getParameter("sugery");
             
+            String year = "";
+            String month = "";
+            String day = "";
+            
+            if (!visitDate.equals("")) {
+                String[] dateArray = visitDate.split("/");
+                year = dateArray[2];
+                month = dateArray[0];
+                day = dateArray[1];
+            }
+            
+            visitDate = year+"-"+month+"-"+day;
+            
             searchVisitsWithCriteria(patientName, visitDate, diagnosis, commentKeyword, prescriptions, surgery, request, response, dbcon);
         } else if (requestType == 9) {
             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);

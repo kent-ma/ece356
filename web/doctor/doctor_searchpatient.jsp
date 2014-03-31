@@ -13,6 +13,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>View Records</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script>
+        $(function() {
+          $( ".datepicker" ).datepicker();
+        });
+        </script>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -40,7 +49,7 @@
         Search Visits by Criteria: <br/>
         <form method="post" action="DoctorServlet">
             Patient Name:<input type="text" name="patient_name"><br/>
-            Last Visit Date: <input type="text" name="patient_visitdate"><br/>
+            Last Visit Date: <input type="text" name="patient_visitdate" class="datepicker"><br/>
             Diagnosis: <input type="text" name="diagnosis"><br/>
             Comment Keyword: <input type="text" name="comment_keyword"><br/>
             Prescriptions: <input type="text" name="prescriptions"><br/>
