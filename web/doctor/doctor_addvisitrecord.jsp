@@ -17,11 +17,7 @@
     <body>
         <h3>Enter Visitation Records</h3>
         <form method="post" action="/ece356/DoctorServlet">
-            
-            <% Visit v = (Visit)request.getAttribute("visit"); %>
-            <input type="hidden" name="apptId" value="<%= v.getApptID() %>">
-            <input type="hidden" name="doctors" value="<%= request.getParameter("doctors") %>">
-            <input type="hidden" name="apptTime" value="<%= request.getParameter("apptTime") %>">
+           
             <input type="hidden" name="requestType" value="5">
             Patient Name:<input type="text" name="visit_patient_name"><br/>
             Patient ID: <input type="text" name="visit_patient_id"><br/>

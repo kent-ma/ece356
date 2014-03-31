@@ -205,23 +205,30 @@ public class DoctorServlet extends HttpServlet {
                 v.setPrescription(request.getParameter("visit_prescription"));
                 v.setComment(request.getParameter("visit_comment"));
                 
+                String arrivalTime = "'"+request.getParameter("visit_arrival")+"'";
+                String departTime = "'"+request.getParameter("visit_departure")+"'";
                 //TODO deal with arrival time and departure time.... 
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                java.util.Date date = new java.util.Date();
+                //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                //java.util.Date date = new java.util.Date();
                 //Date arrival = dateFormat.parse(request.getParameter("visit_arrival"));
-                v.setArrivalTime(date);
+                //v.setArrivalTime(date);
 
+                java.util.Date date= new java.util.Date(); 
+                Timestamp currentTime = new Timestamp(date.getTime());
+                String currentTimeString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime);
+                currentTimeString = "'"+currentTimeString+"'";
+                
                 dbcon.insertRows("Visit", 
-                    "ApptID,ArrivalTime,DepartureTime,V_Procedue,Result,Prescription,V_Comment",
-                    v.getApptID() +"," + v.getArrivalTime()+","+ v.getDepartTime()+","+v.getProcedure()+","+v.getResult()+v.getPrescription()+v.getComment());
-            } 
+                    "ApptID,ArrivalTime,DepartTime,V_Procedure,Result,Prescription,V_Comment,AuditTime,AuditByID",
+                    "'"+v.getApptID()+"'" +"," + arrivalTime+","+ departTime+","+"'"+v.getProcedure()+"'"+","+"'"+v.getResult()+"'"+","+"'"+v.getPrescription()+"'"+","+"'"+v.getComment()+"'"+","+currentTimeString+","+"-1");
+            
+                getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
+             } 
             catch (SQLException ex) 
             {
                 request.setAttribute("exception", ex);
                 getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
             }
-            String url = "/doctor/doctoraddvisitrecord.jsp";
-            getServletContext().getRequestDispatcher(url).include(request, response);
         }
  
  //search visitation record from the selected patient
