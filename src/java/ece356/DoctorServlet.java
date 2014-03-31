@@ -12,25 +12,17 @@ import ece356.Members.Login;
 import ece356.Members.Patient;
 import ece356.Members.Visit;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -90,16 +82,7 @@ public class DoctorServlet extends HttpServlet {
                 }
                 
                 // Get doctor's doctor id.
-                // Should fix this in database.
-                String doctorName = "";
-                if (credentials.getName().equals("kjun")) {
-                    doctorName = "Kim Jong-un";
-                } else if (credentials.getName().equals("obladen")) {
-                    doctorName = "Osama Bin Laden";
-                }
-                
-                Doctor currentDoctor = dbcon.selectDoctor("Name = "+"'"+doctorName+"'");
-                int doctorID = currentDoctor.getDoctorId();
+                int doctorID = credentials.getLoginId();
                 
                 // Get patient IDs for the doctor.
                 ResultSet rsPatientIDs = dbcon.selectRows("DoctorPatient", "PatientID", "DoctorID = "+"'"+doctorID+"'");
@@ -286,7 +269,7 @@ public class DoctorServlet extends HttpServlet {
                 
                 dbcon.insertRows("Visit", 
                     "ApptID,ArrivalTime,DepartTime,V_Procedure,Result,Prescription,V_Comment,AuditTime,AuditByID",
-                    "'"+v.getApptID()+"'" +"," + arrivalTime+","+ departTime+","+"'"+v.getProcedure()+"'"+","+"'"+v.getResult()+"'"+","+"'"+v.getPrescription()+"'"+","+"'"+v.getComment()+"'"+","+currentTimeString+","+"-1");
+                    "'"+v.getApptID()+"'" +"," + arrivalTime+","+ departTime+","+"'"+v.getProcedure()+"'"+","+"'"+v.getResult()+"'"+","+"'"+v.getPrescription()+"'"+","+"'"+v.getComment()+"'"+","+currentTimeString+","+credentials.getLoginId());
             
                 getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
              } 
