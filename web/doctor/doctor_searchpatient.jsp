@@ -12,10 +12,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Patient Records</title>
+        <title>View My Patients Records</title>
     </head>
-    <body>
-        
+    <body>        
         <%-- get all the patients record under the doctor--%>
         My Patients: <select name="patients"> <%
             List<Patient> patients = (List<Patient>)request.getAttribute("record");
@@ -66,7 +65,9 @@
             Month: <input type="text" name="end_month">
             Day: <input type="text" name="end_day">
             <br/>
-            <br/>            
+            <br/>
+            Diagnose:<input type="text" name="patient_diagnose"><br/>
+            
             <input type="submit" value="Search">
         </form>
     </body>

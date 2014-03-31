@@ -140,6 +140,31 @@ public class DatabaseConnection
         return records;
     }
     
+    public List<Visit> selectVisitsFromPatient(String c) throws SQLException
+    {
+        ResultSet row = selectRows("Visit v, Appointment a, Patient p", null, "v.ApptID = a.ApptID and a.PatientID = p.PatientID"+c);
+        List<Visit> records = new LinkedList<>();
+        
+        while (row.next())
+        {
+            Visit newVisit = new Visit();
+
+            newVisit.setApptID(row.getInt("ApptID"));
+            newVisit.setArrivalTime(row.getDate("ArrivalTime"));
+            newVisit.setDepartTime(row.getDate("DepartTime"));
+            newVisit.setProcedure(row.getString("V_Procedure"));
+            newVisit.setResult(row.getString("Result"));
+            newVisit.setPrescription(row.getString("Prescription"));
+            newVisit.setComment(row.getString("V_Comment"));
+            newVisit.setAuditTime(row.getDate("AuditTime"));
+            newVisit.setAuditByID(row.getInt("AuditByID"));
+            
+            records.add(newVisit);
+        }
+        return records;
+    }
+    
+    
     public List<Visit> selectVisits(String c) throws SQLException
     {
         ResultSet row = selectRows("Visit", null, c);

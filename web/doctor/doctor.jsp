@@ -12,21 +12,17 @@
         <title>Doctor Index Page</title>
     </head>
     <body>  
-     <form method="post" action="/ece356/DoctorServlet">
+        <form method="post" action="/ece356/DoctorServlet">
             <input type="hidden" name="requestType" value="1">
             <input type="submit" name="doctor_addvisitrecord" value="Add visit record">
         </form>
-        <br/>
         <form method="post" action="/ece356/DoctorServlet">
             <input type="hidden" name="requestType" value="2">
             <input type="submit" name="doctor_grantaccess" value="Grant Access">
         </form>    
          <form method="post" action="/ece356/DoctorServlet">
             <input type="hidden" name="requestType" value="3">
-            <input type="submit" name="doctor_searchpatient" value="Search Patient">
+            <input type="submit" name="doctor_viewpatient" value="View Patient">
         </form>    
-
-
-
 </body>
 </html>

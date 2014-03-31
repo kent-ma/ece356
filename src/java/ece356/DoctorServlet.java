@@ -6,6 +6,7 @@ package ece356;
 
 import ece356.Backend.DatabaseConnection;
 import ece356.Backend.Utils;
+import ece356.Members.Appointment;
 import ece356.Members.Doctor;
 import ece356.Members.Login;
 import ece356.Members.Patient;
@@ -22,6 +23,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,25 +62,21 @@ public class DoctorServlet extends HttpServlet {
         
         if (request.getParameter("requestType") != null) {
             requestType = Integer.parseInt(request.getParameter("requestType"));
-        }
-        
+        }   
         if (requestType == 0) {
-            // To doctor.jsp
             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
         } else if (requestType == 1) {
             // To doctor_addvisitrecord
             getServletContext().getRequestDispatcher("/doctor/doctor_addvisitrecord.jsp").forward(request, response);
-        } else if (requestType == 2) {
-            
+        } else if (requestType == 2) {  
             //Doctor can grant access to another doctor
             // To doctor_grantaccess.jsp
             List<Doctor> record = new LinkedList<>();
             List<Patient> recordPatient = null;
-            //List<Patient> patientRecord = dbcon.selectPatients("DoctorID =");
             try
-            {
-                
-                recordPatient = dbcon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID = " + credentials.getLoginId() + ")");               
+            {   
+                //recordPatient = dbcon.selectPatients("");   
+                recordPatient = dbcon.selectPatients("and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))");
                 String url = "/doctor/doctor_grantaccess.jsp";
                 request.setAttribute("record", recordPatient);
                 
@@ -84,16 +87,7 @@ public class DoctorServlet extends HttpServlet {
                     newDoctor.setName(result.getString("Name"));
                     newDoctor.setDoctorId(result.getInt("DoctorID"));
                     record.add(newDoctor);
-                }
-                
-                //TODO
-                //Insert a new patient + doctor record for another doctor when submit is clicked
-                //String patientID = request.getParameter("patientID");
-                //String docID = request.getParameter("doctorID");
-                //String value = docID + "," + patientID;
-                //boolean grantSuccess = dbcon.insertRows("DoctorPatient", "DoctorID, PatientID","");
-                
-                
+                }     
             }
             catch (SQLException ex)
             {
@@ -101,19 +95,63 @@ public class DoctorServlet extends HttpServlet {
             }
 
             getServletContext().setAttribute("doctorlist", record);
-            //getServletContext().setAttribute("patientlist", patientRecord);
             request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/doctor/doctor_grantaccess.jsp").forward(request, response);
         }
-        
         else if (requestType == 3) {
-            //Doctor can search patient here
-            // To doctor_searchpatient.jsp
+            //list all the patients
+            //To doctor_viewpatient.jsp
+            List<Patient> recordPatient = null;
+            try
+            {   
+                recordPatient = dbcon.selectPatients("");
+                //recordPatient = dbcon.selectPatients("and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))"");
+                request.setAttribute("record", recordPatient);
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+            request.setAttribute("name", credentials.getName());
+            getServletContext().getRequestDispatcher("/doctor/doctor_viewpatient.jsp").forward(request, response);
+        }  
+        else if (requestType == 4) {
+            // From doctor_searchpatient.jsp
+            grantAccess(request, response, dbcon, credentials);
+        } else if (requestType == 5) {
+            // From doctor_addvisitrecord.jsp
+            addVisitsRecord(request, response, dbcon, credentials);
+        } else if (requestType == 6) {
+            //search patient based on critaria
+            doSearchPatients(request, response, dbcon, credentials);
+        }
+        else if (requestType == 7) {
+            // return all visit record of specific patient
+            getServletContext().getRequestDispatcher("/doctor/doctor_viewvisitrecord.jsp").forward(request, response);
+            searchVisitRecord(request, response, dbcon, credentials);
+        } 
+        
+    }     
+    
+     public void doSearchPatients(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+        {
+            String c = "";
+            if (!request.getParameter("patientName").equals(""))
+            c += " and Name = '" + request.getParameter("patientName") + "'";
+            if (!request.getParameter("patientOHIP").equals(""))
+            c += " and h.HealthCardNo = '" + request.getParameter("patientOHIP") + "'";
+            
+            //last visit ??
+            if (!request.getParameter("patientName").equals(""))
+            c += " and Name = '" + request.getParameter("patientName") + "'";
+            
             List<Patient> record = null;
             try
             {
-                record = dbcon.selectPatients("p.HealthCardNo = h.HealthCardNo and p.PatientID in (select PatientID from DoctorPatient where DoctorID = " + credentials.getLoginId() + ")");               
-                String url = "/doctor/doctor_searchpatient.jsp";
+                record = dbCon.selectPatients(" and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))" + c);
+
+                String url = "/doctor/searchpatient.jsp";
                 request.setAttribute("record", record);
                 getServletContext().getRequestDispatcher(url).include(request, response);
             }
@@ -121,148 +159,118 @@ public class DoctorServlet extends HttpServlet {
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }
-            
-            getServletContext().getRequestDispatcher("/doctor/doctor_searchpatient.jsp").forward(request, response);
-        }  
-        else if (requestType == 4) {
-            // From doctor_searchpatient.jsp
-            grantAccess(request, response, dbcon);
-        } else if (requestType == 5) {
-            // From doctor_addvisitrecord.jsp
-            searchVisitsRecord(request, response, dbcon);
-        } else if (requestType == 6) {
-            // From financial_table.jsp
-            getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
-        }
-        else if (requestType == 7) {
-            // From doctor_addvisitrecord.jsp
-            grantAccess(request, response, dbcon);
-        } 
-        
-    }     
-    
-    protected void  searchPatient(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
-            throws ServletException, IOException {
-
-        try{       
-        }
-        catch (Exception ex) {
-            request.setAttribute("exception", ex);
-            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
-        }
-        
     }
     
-    
- private void searchVisitsRecord(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon) 
-            throws ServletException, IOException {
-        
-     
-        String startYear = request.getParameter("start_year");
-        String startMonth = request.getParameter("start_month");
-        String startDay = request.getParameter("start_day");
-        String endYear = request.getParameter("end_year");
-        String endMonth = request.getParameter("end_month");
-        String endDay = request.getParameter("end_day");
-        String patientID = request.getParameter("patient_id");
-        String patientName = request.getParameter("patient_name");
-        String prescription = request.getParameter("prescription");
-        
-        String startTime = "";
-        String endTime = "";
-        
-        if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
-                !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
-            
-            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+"'";
-            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
-        }
-        
-        ArrayList<Integer> apptID = new ArrayList<Integer>();
-        ArrayList<Visit> visits = new ArrayList<Visit>();
-        
-        try {
-            // Get database connection.
-            //DatabaseConnection dbcon = new DatabaseConnection();
-            
-            // Retrieve appointments by patient id. 
-            ResultSet appt = dbcon.selectRows("Appointment", "ApptID", "PatientID = '"+patientID+"' AND PatientName = '" +patientName +"'");
-            while (appt.next()) {
-                apptID.add(appt.getInt("ApptID"));
+    public void doInit(HttpServletRequest request, HttpServletResponse response, 
+            DatabaseConnection dbCon, Login credentials) throws ServletException, IOException
+    {
+        List<Patient> record = new LinkedList<>();
+        String docName = "";
+        try
+        {
+            // get a list of patients under the doctor for use in the servlet
+            ResultSet result = dbCon.selectRows("Patient", null, null);
+            while (result.next())
+            {
+                Patient newPatient = new Patient();
+                newPatient.setName(result.getString("Name"));
+                newPatient.setPatientId(result.getInt("DoctorID"));
+                record.add(newPatient);
             }
-            
-            // Retrieve records using ApptID.
-            for (int a : apptID) {
-                ResultSet visit;
-                if (startTime.equals("") || endTime.equals("")) {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+"'");
-                } else {
-                    visit = dbcon.selectRows("Visit", null, "ApptID = '"+a+
-                        "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
-                }
+            docName = dbCon.selectStaff("DocotorID = " + credentials.getLoginId()).getName();
+        }
+        catch (SQLException ex)
+        {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/doctor/doctor_viewpatient.jsp";
+        getServletContext().setAttribute("patientlist", record);
+        request.setAttribute("name", docName);
+        getServletContext().getRequestDispatcher(url).include(request, response);
+    }
+    
+ private void addVisitsRecord(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon, Login credentials) 
+           throws ServletException, IOException {
+            Visit v = null;   
+             try 
+             {
+                //the set ID part might be pretty messed up....
+                ResultSet newRows = dbcon.selectRows("Visit", "MAX(ApptID)", null);
+                newRows.next();
+                v = new Visit();
+                v.setApptID(newRows.getInt("MAX(ApptID)") + 1);
+                v.setProcedure(request.getParameter("visit_procedure"));
+                v.setResult(request.getParameter("visit_result"));
+                v.setPrescription(request.getParameter("visit_prescription"));
+                v.setComment(request.getParameter("visit_comment"));
                 
-                if (visit.next()) {
-                    // Create a Visit object and store the object into a list.
-                    int vApptID = visit.getInt("ApptID");
-                    Timestamp vArrivalTime = visit.getTimestamp("ArrivalTime");
-                    Timestamp vDepartTime = visit.getTimestamp("DepartTime");
-                    String vProcedure = visit.getString("V_Procedure");
-                    String vResult = visit.getString("Result"); 
-                    String vPrescription = visit.getString("Prescription");
-                    String vComment = visit.getString("V_Comment");
-                    Timestamp vAuditTime = visit.getTimestamp("AuditTime");
-                    int vAuditByID = visit.getInt("AuditByID");
+                //TODO deal with arrival time and departure time.... 
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                java.util.Date date = new java.util.Date();
+                //Date arrival = dateFormat.parse(request.getParameter("visit_arrival"));
+                v.setArrivalTime(date);
 
-                    Visit v = new Visit(vApptID, vArrivalTime, vDepartTime, vProcedure, vResult, 
-                                          vPrescription, vComment, vAuditTime, vAuditByID);
-
-                    visits.add(v);
-                }
+                dbcon.insertRows("Visit", 
+                    "ApptID,ArrivalTime,DepartureTime,V_Procedue,Result,Prescription,V_Comment",
+                    v.getApptID() +"," + v.getArrivalTime()+","+ v.getDepartTime()+","+v.getProcedure()+","+v.getResult()+v.getPrescription()+v.getComment());
+            } 
+            catch (SQLException ex) 
+            {
+                request.setAttribute("exception", ex);
+                getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
             }
-            
-            // Display the visitation records on a table.
-            request.setAttribute("visits", visits);
-            getServletContext().getRequestDispatcher("/financial/financial_table.jsp").forward(request, response);
-        } catch (Exception ex) {
+            String url = "/doctor/doctoraddvisitrecord.jsp";
+            getServletContext().getRequestDispatcher(url).include(request, response);
+        }
+ 
+ //search visitation record from the selected patient
+ public void searchVisitRecord(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon, Login credentials)
+            throws ServletException, IOException {  
+            String c = request.getParameter("patientID");
+            List<Visit> record = null;
+            try
+            {
+                record = dbcon.selectVisitsFromPatient(c);
+                String url = "/doctor/doctor_searchpatient.jsp";
+                request.setAttribute("record", record);
+                getServletContext().getRequestDispatcher(url).include(request, response);
+            }
+            catch (Exception ex) {
             request.setAttribute("exception", ex);
             getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
-    }
-    
+ }
   //grant access to another doctor 
-    protected void grantAccess(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon)
-            throws ServletException, IOException {
+    public void grantAccess(HttpServletRequest request, HttpServletResponse response, DatabaseConnection dbcon, Login credentials)
+            throws ServletException, IOException {     
         
         String patientID = request.getParameter("patientID");
-        String docID = request.getParameter("doctorID");
+        String docID = request.getParameter("docID");
+        
         String value = docID + "," + patientID;
+        String access = "granting access";
         try {
                     //probably have to do a check for the access right?
-                    boolean grantSuccess = dbcon.insertRows("DoctorPatient", "DoctorID, PatientID","");
-                    //TODO
-                    //if return 1 direct to success page?
-                    //if return 0, access deny page?
+                boolean grantSuccess = dbcon.insertRows("DoctorPatient", "DoctorID, PatientID", value); 
+                    if(grantSuccess == true)
+                    {
+                        access = "access granted!";
+                        //sucessfully granted!
+                    }
+                    else
+                    {   
+                        //didn't grant
+                        access = "request deny!";
+                    }
+                  
         } catch (Exception e) {
             request.setAttribute("exception", e);
+            
         }
+        request.setAttribute("access", access);
         getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
     }
-       // response.setContentType("text/html;charset=UTF-8");
-       // PrintWriter out = response.getWriter();
-        /*try {
-            
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FinancialServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet FinancialServlet at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            
-        } finally {            
-            out.close();
-        }*/
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
