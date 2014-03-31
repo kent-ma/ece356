@@ -51,7 +51,7 @@ public class LogoutServlet extends HttpServlet {
         getServletContext().setAttribute("dbcon", null);
         getServletContext().setAttribute("credentials", null);
         
-        response.sendRedirect("/index.jsp");
+        response.sendRedirect("/ece356");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
