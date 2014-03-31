@@ -7,6 +7,7 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Members.Login;
 import ece356.Members.Visit;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,6 +43,9 @@ public class LegalServlet extends HttpServlet {
             
             List<Visit> vs = dbcon.selectVisits(null);
             request.setAttribute("visits", vs);
+            Login credentials = null;
+            credentials = (Login)getServletContext().getAttribute("credentials");
+            request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/legal/legal_table.jsp").forward(request, response);
             
             getServletContext().getRequestDispatcher(url).forward(request, response);
