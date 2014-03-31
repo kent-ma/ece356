@@ -71,32 +71,54 @@ public class DoctorServlet extends HttpServlet {
         } else if (requestType == 2) {  
             //Doctor can grant access to another doctor
             // To doctor_grantaccess.jsp
-            List<Doctor> record = new LinkedList<>();
-            List<Patient> recordPatient = null;
+            List<Patient> patients = new LinkedList<>();
+            List<Doctor> doctors = new LinkedList<>();
             try
-            {   
-                //recordPatient = dbcon.selectPatients("");   
-                recordPatient = dbcon.selectPatients("and p.PatientID in (select PatientID from DoctorPatient where DoctorID in (select DoctorID from StaffDoctor where StaffID = " + credentials.getLoginId() + "))");
-                String url = "/doctor/doctor_grantaccess.jsp";
-                request.setAttribute("record", recordPatient);
+            {
+                // Get a list of doctors.
+                ResultSet rsDoctors = dbcon.selectRows("Doctor", null, null);
+                while (rsDoctors.next()) {
+                    Doctor d = new Doctor();
+                    d.setName(rsDoctors.getString("Name"));
+                    d.setDoctorId(rsDoctors.getInt("DoctorID"));
+                    d.setDepartment(rsDoctors.getString("Department"));
+                    d.setSpecialty(rsDoctors.getString("Specialty"));
+                    
+                    doctors.add(d);
+                }
                 
-                ResultSet result = dbcon.selectRows("Doctor", null, null);
-                while (result.next())
-                {
-                    Doctor newDoctor = new Doctor();
-                    newDoctor.setName(result.getString("Name"));
-                    newDoctor.setDoctorId(result.getInt("DoctorID"));
-                    record.add(newDoctor);
-                }     
-            }
-            catch (SQLException ex)
+                // Get doctor's doctor id.
+                String doctorName = "";
+                if (credentials.getName().equals("kjun")) {
+                    doctorName = "Kim Jong-un";
+                }
+                Doctor currentDoctor = dbcon.selectDoctor("Name = "+"'"+doctorName+"'");
+                int doctorID = currentDoctor.getDoctorId();
+                
+                // Get patient IDs for the doctor.
+                ResultSet rsPatientIDs = dbcon.selectRows("DoctorPatient", "PatientID", "DoctorID = "+"'"+doctorID+"'");
+                ArrayList<Integer> patientIDs = new ArrayList<Integer>();
+                while (rsPatientIDs.next()) {
+                    patientIDs.add(rsPatientIDs.getInt("PatientID"));
+                }
+                
+                // Get patients for the doctor.
+                for (int p : patientIDs) {
+                    Patient patient = dbcon.selectPatient("p.PatientID = "+"'"+p+"'");
+                    if (patient != null)
+                        patients.add(patient);
+                }
+                
+                // Put patients and doctors in the request. 
+                request.setAttribute("record", patients);
+                request.setAttribute("doctorlist", doctors);
+                
+                request.setAttribute("name", credentials.getName());
+                getServletContext().getRequestDispatcher("/doctor/doctor_grantaccess.jsp").forward(request, response);
+            } catch (Exception ex)
             {
                 Utils.showErrorPage(getServletContext(), ex, request, response);
             }
-
-            getServletContext().setAttribute("doctorlist", record);
-            request.setAttribute("name", credentials.getName());
-            getServletContext().getRequestDispatcher("/doctor/doctor_grantaccess.jsp").forward(request, response);
         }
         else if (requestType == 3) {
             //list all the patients

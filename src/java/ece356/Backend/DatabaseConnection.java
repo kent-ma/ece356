@@ -95,21 +95,23 @@ public class DatabaseConnection
     public Patient selectPatient(String c) throws SQLException
     {
         ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName, d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
-        Patient newPatient = new Patient();
+        Patient newPatient = null;
         
-        row.next();
-        newPatient.setName(row.getString("pName"));
-        newPatient.setAddress(row.getString("Address"));
-        newPatient.setDob(row.getDate("DOB"));
-        newPatient.setPatientId(row.getInt("PatientID"));
-        newPatient.setSin(row.getInt("SIN"));
-        newPatient.setHealthCardNo(row.getString("HealthCardNo"));
-        newPatient.setHealthStatus(row.getString("HealthStatus"));
-        newPatient.setPhoneNum(row.getLong("Phone"));
-        newPatient.setDefDoctorId(row.getInt("DefDoctorID"));
-        newPatient.setDefDoctorName(row.getString("dName"));
-        newPatient.setAuditTime(row.getDate("AuditTime"));
-        newPatient.setAuditById(row.getInt("AuditByID"));
+        if (row.next()) {
+            newPatient = new Patient();
+            newPatient.setName(row.getString("pName"));
+            newPatient.setAddress(row.getString("Address"));
+            newPatient.setDob(row.getDate("DOB"));
+            newPatient.setPatientId(row.getInt("PatientID"));
+            newPatient.setSin(row.getInt("SIN"));
+            newPatient.setHealthCardNo(row.getString("HealthCardNo"));
+            newPatient.setHealthStatus(row.getString("HealthStatus"));
+            newPatient.setPhoneNum(row.getLong("Phone"));
+            newPatient.setDefDoctorId(row.getInt("DefDoctorID"));
+            newPatient.setDefDoctorName(row.getString("dName"));
+            newPatient.setAuditTime(row.getDate("AuditTime"));
+            newPatient.setAuditById(row.getInt("AuditByID"));
+        }
         
         return newPatient;
     }
