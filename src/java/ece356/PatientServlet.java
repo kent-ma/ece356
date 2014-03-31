@@ -9,6 +9,9 @@ import ece356.Backend.Utils;
 import ece356.Members.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,34 +53,52 @@ public class PatientServlet extends HttpServlet {
             Login login = (Login) context.getAttribute(Utils.ATTR_CREDENTIALS);
             dbc = (DatabaseConnection) context.getAttribute(Utils.ATTR_DBC);
 
-            if (login == null || dbc == null) {
-
-            }
-
             if (requestType == 0) {
-                Patient p = dbc.selectPatient("PatientID = " + login.getLoginId());
-                request.setAttribute("patient", p);
-                if (p != null) {
-                    List<Appointment> appts = dbc.selectAppointments("a.PatientID = " + login.getLoginId());
-                    request.setAttribute("appts", appts);
-                    List<Prescription> prescriptions = dbc.selectPrescriptions("a.PatientID = " + login.getLoginId());
-                    request.setAttribute("prescriptions", prescriptions);
-                    RequestDispatcher rd;
-                    rd = request.getRequestDispatcher("/patient/patient.jsp");
-                    rd.forward(request, response);
-                } else {
-                    // TODO - Display a wtf is going on error
-                }
+                doInit(request, response, dbc, login);
             } else if (requestType == 1) {
                 String newAddr = request.getParameter("addr");
                 String newPhone = request.getParameter("phonenum");
 
-            }
+                if ((newAddr == null || newAddr.length() == 0) || (newPhone == null || newPhone.length() == 0)) {
+                    doInit(request, response, dbc, login);
+                }
 
+                try {
+                    Patient p = dbc.selectPatient("PatientID = " + login.getLoginId());
+                    
+                    if (!newAddr.equals(p.getAddress())) {
+                        dbc.updateRows("Healthcard", "Address = " + newAddr, "HealthCardNo = " + p.getHealthCardNo());
+                    }
+                    if (!newPhone.equals(p.getPhoneNum())) {
+                        dbc.updateRows("Patient", "Phone = " + newPhone, "PatientID = " + p.getPatientId());
+                    }
+                    doInit(request, response, dbc, login);
+
+                } catch (SQLException e) {
+
+                }
+            }
         } catch (Exception e) {
             Logger.getLogger(PatientServlet.class.getName()).log(Level.SEVERE, null, e);
             Utils.showErrorPage(getServletContext(), e, request, response);
         }
+    }
+
+    public void doInit(HttpServletRequest request, HttpServletResponse response,
+            DatabaseConnection dbc, Login credentials) throws ServletException, IOException {
+        try {
+            Patient p = dbc.selectPatient("PatientID = " + credentials.getLoginId());
+            getServletContext().setAttribute("patient", p);
+            List<Appointment> appts = dbc.selectAppointments("a.PatientID = " + credentials.getLoginId());
+            getServletContext().setAttribute("appts", appts);
+            List<Prescription> prescriptions = dbc.selectPrescriptions("a.PatientID = " + credentials.getLoginId());
+            getServletContext().setAttribute("prescriptions", prescriptions);
+        } catch (SQLException ex) {
+            Utils.showErrorPage(getServletContext(), ex, request, response);
+        }
+
+        String url = "/patient/patient.jsp";
+        getServletContext().getRequestDispatcher(url).include(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
