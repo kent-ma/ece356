@@ -22,9 +22,7 @@
             <h1>Financial Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <button type="button" class="btn btn-primary btn-lg " href="/ece356/Logout">
-                Logout
-            </button>
+            <a href="/ece356/Logout">Logout</a>
             </div>            
         </div>
             
