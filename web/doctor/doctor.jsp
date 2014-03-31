@@ -27,7 +27,7 @@
         </div>
             
         <ul class="nav nav-tabs">
-            <li class="active"> <a href="FinancialServlet?requestType=0"> Home </a></li>
+            <li class="active"> <a href="DoctorServlet?requestType=0"> Home </a></li>
             <li><a href="DoctorServlet?requestType=1">Add visit record</a></li>
             <li><a href="DoctorServlet?requestType=2">Grant Access</a></li>
             <li><a href="DoctorServlet?requestType=3">View Patient</a></li>
