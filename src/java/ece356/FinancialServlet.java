@@ -5,10 +5,15 @@
 package ece356;
 
 import ece356.Backend.DatabaseConnection;
+import ece356.Backend.Utils;
 import ece356.Members.Appointment;
+import ece356.Members.Doctor;
 import ece356.Members.Login;
 import ece356.Members.Visit;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,6 +57,31 @@ public class FinancialServlet extends HttpServlet {
         }
         
         if (requestType == 0) {
+            
+            List<Doctor> record = new LinkedList<>();
+            try
+            {
+                // get a list of doctors for use in the servlet
+                ResultSet result = dbcon.selectRows("Doctor", null, null);
+
+                while (result.next())
+                {
+                    Doctor newDoctor = new Doctor();
+
+                    newDoctor.setName(result.getString("Name"));
+                    newDoctor.setDoctorId(result.getInt("DoctorID"));
+
+                    record.add(newDoctor);
+                }
+
+            }
+            catch (SQLException ex)
+            {
+                Utils.showErrorPage(getServletContext(), ex, request, response);
+            }
+
+            getServletContext().setAttribute("doctorlist", record);
+            
             // To financial.jsp
             getServletContext().getRequestDispatcher("/financial/financial.jsp").forward(request, response);
         } else if (requestType == 1) {
@@ -103,25 +133,25 @@ public class FinancialServlet extends HttpServlet {
         if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
                 !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
             
-            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+"'";
-            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
+            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+" 00:00:00'";
+            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+" 23:59:59'";
         }
         
         List<Appointment> appts = null;
-        List<Visit> visits = null;
+        List<Visit> visits = new LinkedList<>();
         
         try {
             // Retrieve appointments by patient id. 
-            appts = dbcon.selectAppointments("a.DoctorID = '"+doctorID+"'");
+            appts = dbcon.selectAppointments("a.DoctorID = "+doctorID);
             
             // Retrieve records using ApptID.
             for (Appointment a : appts) {
                 //ResultSet visit;
                 if (startTime.equals("") || endTime.equals("")) {
-                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+"'");
+                    visits.addAll(dbcon.selectVisits("ApptID = "+a.getApptId()));
                 } else {
-                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+
-                        "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
+                    visits.addAll(dbcon.selectVisits("ApptID = "+a.getApptId()+
+                        " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime));
                 }
             }
             
@@ -166,25 +196,26 @@ public class FinancialServlet extends HttpServlet {
         if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
                 !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
             
-            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+"'";
-            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+"'";
+            startTime = "'"+startYear+"-"+startMonth+"-"+startDay+" 00:00:00'";
+            endTime = "'"+endYear+"-"+endMonth+"-"+endDay+" 23:59:59'";
         }
         
         List<Appointment> appts = null;
-        List<Visit> visits = null;
+        List<Visit> visits = new LinkedList<>();
         
         try {
-            // Retrieve appointments by patient id. 
-            appts = dbcon.selectAppointments("a.PatientID = '"+patientID+"'");
+            // Retrieve appointments by patient id.
+            int patientNum = dbcon.selectPatient("h.Name = '" + patientID + "'").getPatientId();
+            appts = dbcon.selectAppointments("a.PatientID = "+patientNum);
             
             // Retrieve records using ApptID.
             for (Appointment a : appts) {
                 //ResultSet visit;
                 if (startTime.equals("") || endTime.equals("")) {
-                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+"'");
+                    visits.addAll(dbcon.selectVisits("ApptID = "+a.getApptId()));
                 } else {
-                    visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+
-                        "' AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime);
+                    visits.addAll(dbcon.selectVisits("ApptID = "+a.getApptId()+
+                        " AND "+"ArrivalTime >= "+startTime+" AND "+"ArrivalTime <= "+endTime));
                 }
             }
             

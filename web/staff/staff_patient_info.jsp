@@ -25,7 +25,7 @@
             <h1>Staff Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
             </div>            
         </div>
         

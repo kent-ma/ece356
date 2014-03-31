@@ -67,7 +67,7 @@ public class PatientServlet extends HttpServlet {
                     Patient p = dbc.selectPatient("PatientID = " + login.getLoginId());
                     
                     if (!newAddr.equals(p.getAddress())) {
-                        dbc.updateRows("Healthcard", "Address = " + newAddr, "HealthCardNo = " + p.getHealthCardNo());
+                        dbc.updateRows("HealthCard", "Address = '" + newAddr + "'", "HealthCardNo = " + p.getHealthCardNo());
                     }
                     if (!newPhone.equals(p.getPhoneNum())) {
                         dbc.updateRows("Patient", "Phone = " + newPhone, "PatientID = " + p.getPatientId());
@@ -75,7 +75,7 @@ public class PatientServlet extends HttpServlet {
                     doInit(request, response, dbc, login);
 
                 } catch (SQLException e) {
-
+                    Utils.showErrorPage(getServletContext(), e, request, response);
                 }
             }
         } catch (Exception e) {

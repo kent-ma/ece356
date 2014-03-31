@@ -47,7 +47,7 @@
         <input type="hidden" name="requestType" value="4">
             Start Date: <input type="text" name="start_date" class="datepicker">
             End Date: <input type="text" name="end_date" class="datepicker">
-            Patient ID: <input type="text" name="patient_id"><br/>
+            Patient Name: <input type="text" name="patient_id"><br/>
             
             <input type="submit" value="Search">
         </form>

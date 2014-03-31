@@ -32,31 +32,21 @@
         <h1>Patient Info</h1>
         <span class="label label-default">Freedom is how big your wallet is</span><hr>
         <div class="well well-small">Welcome! <% out.print(p.getName());%>
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
         </div>            
     </div>
 
     <div id="container">
         <div id="user_info">
-            <form>
+            <form method="post" action="PatientServlet">
                 Name: <%out.print(p.getName());%><br>
                 S.I.N: <%out.print(p.getSin());%><br>
                 Health Card No: <%out.print(p.getHealthCardNo());%><br>
                 Phone Number: <input type="tel" name="phonenum" value="<%out.print(p.getPhoneNum());%>"><br>
                 Address: <input type="text" name="addr" value="<%out.print(p.getAddress());%>"><br>
                 Doctor: <%out.print(p.getDefDoctorName());%><br>
-                <input type ="hidden" name="requestType" value="1">
+                <input type="hidden" name="requestType" value="1">
                 <input type="submit" value="Update Information">
-            </form>
-        </div>
-        <div id="change_password">
-            <h4>Change Password</h4><br>
-            <form>
-                <%--Old Password: <input type="password" name="oldpassword">--%>
-                New Password: <input type="password" name="newpassworda"><br>
-                Confirm New Password: <input type="password" name="newpasswordb"><br>
-                <input type ="hidden" name="requestType" value="2">
-                <input type="submit" value="Change Password">
             </form>
         </div>
         <br>

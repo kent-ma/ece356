@@ -4,6 +4,8 @@
     Author     : cynthiachoi
 --%>
 
+<%@page import="ece356.Members.Doctor"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -48,7 +50,11 @@
         <input type="hidden" name="requestType" value="3">
             Start Date: <input type="text" name="start_date" class="datepicker">
             End Date: <input type="text" name="end_date" class="datepicker">
-            Doctor ID: <input type="text" name="doctor_id"><br>
+            Doctor Name: <select name="doctor_id"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
+                            <% for (Doctor d : doctors) { %>
+                                <option value="<%= d.getDoctorId() %>"><%= d.getName() %></option>
+                            <% } %>
+                            </select><br>
             
             <input type="submit" value="Search">
         </form>    
