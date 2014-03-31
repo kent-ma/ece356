@@ -15,6 +15,28 @@
         <title>View Records</title>
     </head>
     <body>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Doctor Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <a href="Logout">Logout</a>
+            </div>            
+        </div>
+            
+        <ul class="nav nav-tabs">
+            <li> <a href="DoctorServlet?requestType=0"> Home </a></li>
+            <li><a href="DoctorServlet?requestType=1">Add visit record</a></li>
+            <li><a href="DoctorServlet?requestType=2">Grant Access</a></li>
+            <li><a href="DoctorServlet?requestType=3">View Patient</a></li>
+            <li class="active"><a href="DoctorServlet?requestType=7">Search Visits</a></li>
+        </ul>
+        
         Search Visits by Criteria: <br/>
         <form method="post" action="DoctorServlet">
             Patient Name:<input type="text" name="patient_name"><br/>
