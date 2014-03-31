@@ -94,8 +94,8 @@ public class DatabaseConnection
     
     public Patient selectPatient(String c) throws SQLException
     {
-        ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName, d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
-        Patient newPatient = null;
+        ResultSet row = selectRows("Patient p, HealthCard h, Doctor d", "MAX(p.AuditTime) as pLatest, h.Address, h.DOB, p.PatientID, p.SIN, h.HealthCardNo, p.HealthStatus, p.Phone, p.DefDoctorID, p.AuditTime, p.AuditByID, h.Name as pName, d.Name as dName", "p.HealthCardNo = h.HealthCardNo and p.DefDoctorID = d.DoctorID and " + c);
+        Patient newPatient = new Patient();
         
         if (row.next()) {
             newPatient = new Patient();
@@ -242,8 +242,11 @@ public class DatabaseConnection
     
     public boolean updateRows(String t, String v, String c) throws SQLException
     {
+        //ResultSet rowUpdates = selectRows(t, null, c);
+        
         String sql = "UPDATE " + t + " SET " + v + " WHERE " + c;
         return stmt.execute(sql);
+        
     }
     
     public boolean checkExists(String t, String v, String c) throws SQLException

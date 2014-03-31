@@ -11,6 +11,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script>
+        $(function() {
+          $( ".datepicker" ).datepicker();
+        });
+        </script>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -23,7 +32,7 @@
             <h1>Staff Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
             </div>            
         </div>
         
@@ -37,7 +46,7 @@
             Name:           <input type="text" name="name" value="<%= p.getName() %>"><br>
             Address:        <input type="text" name="address" value="<%= p.getAddress() %>"><br>
             Phone Number:   <input type="text" name="phone" value="<%= p.getPhoneNum() %>"><br>
-            DOB:            <input type="text" name="dob" value="<%= p.getDob() %>"><br>
+            DOB:            <input type="text" name="dob" value="<%= p.getJQDOB() %>" class="datepicker"><br>
             SIN:            <input type="text" name="sin" value="<%= p.getSin() %>"><br>
             OHIP:           <input type="text" name="hcn" value="<%= p.getHealthCardNo() %>"><br>
             Status:          <input type="text" name="status" value="<%= p.getHealthStatus() %>"><br>

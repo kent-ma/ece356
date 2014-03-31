@@ -36,4 +36,27 @@ public class Utils {
         request.setAttribute(P_EXCEPTION, e);
         context.getRequestDispatcher(URL_ERROR).forward(request, response);
     }
+    
+    public static String parseDate(String dirtyDate)
+    {
+        String startYear = "";
+        String startMonth = "";
+        String startDay = "";
+        
+        if (!dirtyDate.equals("")) {
+            String[] startDateArray = dirtyDate.split("/");
+            startYear = startDateArray[2];
+            startMonth = startDateArray[0];
+            startDay = startDateArray[1];
+        }
+        
+        String startTime = "";
+        
+        if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("")) 
+        {
+            startTime = startYear+"-"+startMonth+"-"+startDay;
+        }
+        
+        return startTime;
+    }
 }

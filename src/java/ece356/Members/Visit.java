@@ -59,7 +59,7 @@ public class Visit {
     public Date getAuditTime() {return auditTime;}
     public int getAuditByID() {return auditByID;}
     
-    public void setApptID(int apptId) {this.apptID = apptID;}
+    public void setApptID(int apptId) {this.apptID = apptId;}
     public void setArrivalTime(Date arrivalTime) {this.arrivalTime = arrivalTime;}
     public void setDepartTime(Date departTime) {this.departTime = departTime;}
     public void setProcedure(String procedure) {this.procedure = procedure;}
