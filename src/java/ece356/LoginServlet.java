@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
         try {
             DatabaseConnection dbcon = new DatabaseConnection();
             Login credentials = dbcon.selectLogin("name = '" + name + "' AND " + "password = '" + DigestUtils.sha256Hex(password) + "'");
-            url = "error.jsp";
+            url = "index.jsp";
             
             switch(credentials.getUserType()){
                 case 0:
