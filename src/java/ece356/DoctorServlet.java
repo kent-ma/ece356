@@ -120,15 +120,7 @@ public class DoctorServlet extends HttpServlet {
             {   
                 // Get doctor's doctor id.
                 // Should fix this in database.
-                String doctorName = "";
-                if (credentials.getName().equals("kjun")) {
-                    doctorName = "Kim Jong-un";
-                } else if (credentials.getName().equals("obladen")) {
-                    doctorName = "Osama Bin Laden";
-                }
-                
-                Doctor currentDoctor = dbcon.selectDoctor("Name = "+"'"+doctorName+"'");
-                int doctorID = currentDoctor.getDoctorId();
+                int doctorID = credentials.getLoginId();
                 
                 // Get patient IDs for the doctor.
                 ResultSet rsPatientIDs = dbcon.selectRows("DoctorPatient", "PatientID", "DoctorID = "+"'"+doctorID+"'");
