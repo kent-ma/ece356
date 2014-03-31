@@ -12,21 +12,28 @@
         <title>Doctor Index Page</title>
     </head>
     <body>  
-        <form method="post" action="/ece356/DoctorServlet">
-            <input type="hidden" name="requestType" value="1">
-            <input type="submit" name="doctor_addvisitrecord" value="Add visit record">
-        </form>
-        <form method="post" action="/ece356/DoctorServlet">
-            <input type="hidden" name="requestType" value="2">
-            <input type="submit" name="doctor_grantaccess" value="Grant Access">
-        </form>    
-         <form method="post" action="/ece356/DoctorServlet">
-            <input type="hidden" name="requestType" value="3">
-            <input type="submit" name="doctor_viewpatient" value="View Patient">
-        </form> 
-        <form method="post" action="/ece356/DoctorServlet">
-            <input type="hidden" name="requestType" value="7">
-            <input type="submit" name="doctor_searchvisits" value="Search Visits">
-        </form>  
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Doctor Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <a href="Logout">Logout</a>
+            </div>            
+        </div>
+            
+        <ul class="nav nav-tabs">
+            <li class="active"> <a href="DoctorServlet?requestType=0"> Home </a></li>
+            <li><a href="DoctorServlet?requestType=1">Add visit record</a></li>
+            <li><a href="DoctorServlet?requestType=2">Grant Access</a></li>
+            <li><a href="DoctorServlet?requestType=3">View Patient</a></li>
+            <li><a href="DoctorServlet?requestType=7">Search Visits</a></li>
+        </ul>
+            
+        This is the home page 
 </body>
 </html>
