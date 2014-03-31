@@ -94,6 +94,6 @@
     <input type="hidden" name="requestType" value="8">
     <input type="submit" value="New Patient">
     </form>
-    <p><a href="/StaffServlet">Back to Staff Home</a>
+    <p><a href="/ece356/StaffServlet">Back to Staff Home</a>
     </body>
 </html>
