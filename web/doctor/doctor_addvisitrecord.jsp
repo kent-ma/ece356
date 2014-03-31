@@ -12,6 +12,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Enter Visitation Records</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script>
+        $(function() {
+          $( ".datepicker" ).datepicker();
+        });
+        </script>
     </head>
     
     <body>
@@ -46,10 +55,10 @@
             Procedure:<input type="text" name="visit_procedure"><br/>
             Result:<input type="text" name="visit_result"><br/>
             Prescription: <input type="text" name="visit_prescription"><br/>
-            Diagnosis<input type="text" name="visit_diagnosis"><br/>
-            Arrival Time<input type="text" name="visit_arrival"><br/>
-            Departure Time<input type="text" name="visit_departure"><br/>
-            Comment<input type="text" name="visit_comment"><br/>
+            Diagnosis: <input type="text" name="visit_diagnosis"><br/>
+            Arrival Time: <input type="text" name="visit_arrival" class="datepicker"><br/>
+            Departure Time: <input type="text" name="visit_departure" class="datepicker"><br/>
+            Comment: <input type="text" name="visit_comment"><br/>
             <input type="submit" value="Add">
         </form>
     </body>

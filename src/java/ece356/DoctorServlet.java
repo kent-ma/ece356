@@ -262,8 +262,36 @@ public class DoctorServlet extends HttpServlet {
                 v.setPrescription(request.getParameter("visit_prescription"));
                 v.setComment(request.getParameter("visit_comment"));
                 
-                String arrivalTime = "'"+request.getParameter("visit_arrival")+"'";
-                String departTime = "'"+request.getParameter("visit_departure")+"'";
+                String startDateString = request.getParameter("visit_arrival");
+                String endDateString = request.getParameter("visit_departure");
+                String startYear = "";
+                String startMonth = "";
+                String startDay = "";
+                String endYear = "";
+                String endMonth = "";
+                String endDay = "";
+
+                if (!startDateString.equals("") && !endDateString.equals("")) {
+                    String[] startDateArray = startDateString.split("/");
+                    startYear = startDateArray[2];
+                    startMonth = startDateArray[0];
+                    startDay = startDateArray[1];
+
+                    String[] endDateArray = endDateString.split("/");
+                    endYear = endDateArray[2];
+                    endMonth = endDateArray[0];
+                    endDay = endDateArray[1];
+                }
+
+                String arrivalTime = "";
+                String departTime = "";
+
+                if (!startYear.equals("") && !startMonth.equals("") && !startDay.equals("") &&
+                        !endYear.equals("") && !endMonth.equals("") && !endDay.equals("")) {
+
+                    arrivalTime = "'"+startYear+"-"+startMonth+"-"+startDay+" 00:00:00'";
+                    departTime = "'"+endYear+"-"+endMonth+"-"+endDay+" 23:59:59'";
+                }
 
                 java.util.Date date= new java.util.Date(); 
                 Timestamp currentTime = new Timestamp(date.getTime());
@@ -288,17 +316,11 @@ public class DoctorServlet extends HttpServlet {
                throws ServletException, IOException {  
         
         List<Appointment> appts = null;
-        List<Visit> visits = null;
+        List<Visit> visits = new LinkedList<Visit>();
         
         try {
             // Retrieve appointments by patient id. 
-            appts = dbcon.selectAppointments("a.PatientID = '"+patientID+"'");
-            
-            // Retrieve records using ApptID.
-            for (Appointment a : appts) {
-                //ResultSet visit;
-                visits = dbcon.selectVisits("ApptID = '"+a.getApptId()+"'");
-            }
+            visits = dbcon.selectVisitsFromPatient(" AND p.PatientID = "+"'"+patientID+"'");
             
             // Display the visitation records on a table.
             request.setAttribute("visits", visits);
