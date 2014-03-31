@@ -15,22 +15,26 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
         
         <div class="page-header">
             <h1>Financial Department</h1>
-            <span class="label label-default">Freedom is how big your wallet is</span><br>
-             <small> Welcome ${name} </small><a href="/ece356/Logout">Logout</a>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <button type="button" class="btn btn-primary btn-lg " href="/ece356/Logout">
+                Logout
+            </button>
+            </div>            
         </div>
-        
-        <form method="post" action="/ece356/FinancialServlet">
-            <input type="hidden" name="requestType" value="1">
-            <input type="submit" name="submit_doctor" value="Access Records by Doctor ID">
-        </form>
-        <br/>
-        <form method="post" action="/ece356/FinancialServlet">
-            <input type="hidden" name="requestType" value="2">
-            <input type="submit" name="submit_patient" value="Access Records by Patient ID">
-        </form>
+            
+        <ul class="nav nav-tabs">
+            <li class="active"> <a href="/ece356/FinancialServlet?requestType=0"> Home </a></li>
+            <li><a href="/ece356/FinancialServlet?requestType=1">Access Records by Doctor ID</a></li>
+            <li><a href="/ece356/FinancialServlet?requestType=2">Access Records by Patient ID</a></li>
+        </ul>
+             
+        This is the homepage
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>

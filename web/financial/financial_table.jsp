@@ -17,7 +17,7 @@
     <body>
         Welcome ${name} <a href="/ece356/Logout">Logout</a><br/><br/>
         <%--Retrieve visits from servlet--%>
-        <table border="1" style="width:800px">
+        <table border="1" style="width:800px" class="table table-striped">
         <%
             List<Visit> visits = (List<Visit>)request.getAttribute("visits");
             %>
@@ -29,20 +29,21 @@
             <%
                 } else {
             %>
-                    Number of matched records: <%= visits.size() %>
-                    <br/>
-                    <br/>
-                    <tr>
-                        <td>Appointment ID</td>
-                        <td>Arrival Time</td>
-                        <td>Departure Time</td>
-                        <td>Procedure</td>
-                        <td>Result</td>
-                        <td>Prescription</td>
-                        <td>Comment</td>
-                        <td>Audit Time</td>
-                        <td>Audit by ID</td>
-                    </tr>
+                    
+                    
+                    <thead>
+                        <tr>
+                            <th>Appointment ID</th>
+                            <th>Arrival Time</th>
+                            <th>Departure Time</th>
+                            <th>Procedure</th>
+                            <th>Result</th>
+                            <th>Prescription</th>
+                            <th>Comment</th>
+                            <th>Audit Time</th>
+                            <th>Audit by ID</th>
+                        </tr>
+                    </thead>
                     <%
                     for (Visit v : visits) {
                         %>
@@ -62,6 +63,8 @@
                 }
         %>
         </table>
+        Number of matched records: <%= visits.size() %>
+        
         <!--<a href="financial/financial.jsp">Start a New Search</a>-->
         <form method="post" action="/ece356/FinancialServlet">
             <input type="hidden" name="requestType" value="5">

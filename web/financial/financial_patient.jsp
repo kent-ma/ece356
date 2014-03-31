@@ -21,8 +21,30 @@
         </script>
     </head>
     <body>
-        Welcome ${name} <a href="/ece356/Logout">Logout</a><br/><br/>
-        <h3>Search Visitation Records</h3>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <script src="/scripts/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
+        <div class="page-header">
+            <h1>Financial Department</h1>
+            <span class="label label-default">Freedom is how big your wallet is</span><hr>
+            <div class="well well-small">Welcome! ${name}
+            <button type="button" class="btn btn-primary btn-lg " href="/ece356/Logout">
+                Logout
+            </button>
+            </div>            
+        </div>
+            
+        <ul class="nav nav-tabs">
+            <li> <a href="/ece356/FinancialServlet?requestType=0"> Home </a></li>
+            <li><a href="/ece356/FinancialServlet?requestType=1">Access Records by Doctor ID</a></li>
+            <li class="active"><a href="/ece356/FinancialServlet?requestType=2">Access Records by Patient ID</a></li>
+        </ul>
+            
+            
+        <h3>Search Patient Visitation Records</h3>
         <form method="post" action="/ece356/FinancialServlet">
         <input type="hidden" name="requestType" value="4">
             Start Date: <input type="text" name="start_date" class="datepicker">
