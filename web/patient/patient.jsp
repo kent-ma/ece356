@@ -12,7 +12,7 @@
 <%@page import="java.util.List"%>
 
 <%
-    Patient p = (Patient) request.getAttribute("patient");
+    Patient p = (Patient) getServletContext().getAttribute("patient");
 %>
 <!DOCTYPE html>
 <link rel="stylesheet" href="css/github.css" type="text/css" />
@@ -23,19 +23,19 @@
         <title>Welcome, ________</title>
     </head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <script src="/scripts/jquery.min.js"></script>
-        <script src="/bootstrap/js/bootstrap.min.js"></script>
-        
-        <div class="page-header">
-            <h1>Patient Info</h1>
-            <span class="label label-default">Freedom is how big your wallet is</span><hr>
-            <div class="well well-small">Welcome! <% out.print(p.getName());%>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+    <div class="page-header">
+        <h1>Patient Info</h1>
+        <span class="label label-default">Freedom is how big your wallet is</span><hr>
+        <div class="well well-small">Welcome! <% out.print(p.getName());%>
             <a href="/ece356/Logout">Logout</a>
-            </div>            
-        </div>
-    
+        </div>            
+    </div>
+
     <div id="container">
         <div id="user_info">
             <form>
@@ -45,11 +45,18 @@
                 Phone Number: <input type="tel" name="phonenum" value="<%out.print(p.getPhoneNum());%>"><br>
                 Address: <input type="text" name="addr" value="<%out.print(p.getAddress());%>"><br>
                 Doctor: <%out.print(p.getDefDoctorName());%><br>
-                Old Password: <input type="password" name="oldpassword"><br>
+                <input type ="hidden" name="requestType" value="1">
+                <input type="submit" value="Update Information">
+            </form>
+        </div>
+        <div id="change_password">
+            <h4>Change Password</h4><br>
+            <form>
+                <%--Old Password: <input type="password" name="oldpassword">--%>
                 New Password: <input type="password" name="newpassworda"><br>
                 Confirm New Password: <input type="password" name="newpasswordb"><br>
-                <input type ="hidden" name="requestType" value="1">
-                <input type="submit" value="Edit Data">
+                <input type ="hidden" name="requestType" value="2">
+                <input type="submit" value="Change Password">
             </form>
         </div>
         <br>
@@ -57,7 +64,7 @@
         <div class="container">    
             <table border="1" style="width:800px">
                 <%
-                    List<Appointment> appts = (List<Appointment>) request.getAttribute("appts");
+                    List<Appointment> appts = (List<Appointment>) getServletContext().getAttribute("appts");
                     if (!appts.isEmpty()) {
                 %>
                 <tr>
@@ -76,7 +83,7 @@
                     <td><%= a.getApptType()%></td>                         
                 </tr>
                 <%
-                    }
+                        }
                     }
                 %>
             </table>
@@ -85,25 +92,25 @@
         <div class="container">
             <table border="1" style="width:800px">
                 <%
-                    List<Prescription> ps = (List<Prescription>) request.getAttribute("prescriptions");
+                    List<Prescription> ps = (List<Prescription>) getServletContext().getAttribute("prescriptions");
                     if (!ps.isEmpty()) {
                 %>
                 <tr>
                     <td>Prescription</td>
                     <td>Doctor</td>
                     <td>Date</td>
-                    
+
                 </tr>
                 <%
                     for (Prescription pre : ps) {
                 %>
                 <tr>
-                    <td><%= pre.getPrescription() %></td>
-                    <td><%= pre.getDoctor() %></td>
-                    <td><%= pre.getDate() %></td>                     
+                    <td><%= pre.getPrescription()%></td>
+                    <td><%= pre.getDoctor()%></td>
+                    <td><%= pre.getDate()%></td>                     
                 </tr>
                 <%
-                    }
+                        }
                     }
                 %>
             </table>

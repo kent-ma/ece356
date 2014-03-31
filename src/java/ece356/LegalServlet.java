@@ -48,7 +48,7 @@ public class LegalServlet extends HttpServlet {
             request.setAttribute("name", credentials.getName());
             getServletContext().getRequestDispatcher("/legal/legal_table.jsp").forward(request, response);
             
-            getServletContext().getRequestDispatcher(url).forward(request, response);
+            //getServletContext().getRequestDispatcher(url).forward(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             url = "/error.jsp";

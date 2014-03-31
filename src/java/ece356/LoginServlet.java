@@ -52,19 +52,19 @@ public class LoginServlet extends HttpServlet {
             
             switch(credentials.getUserType()){
                 case 0:
-                    url = "/ece356/PatientServlet";
+                    url = "PatientServlet";
                     break;
                 case 1:
-                    url = "StaffServlet";
+                    url = "/ece356/StaffServlet";
                     break;
                 case 2:
-                    url = "/ece356/DoctorServlet";
+                    url = "DoctorServlet";
                     break;
                 case 3:
-                    url = "/ece356/LegalServlet";
+                    url = "LegalServlet";
                     break;
                 case 4:
-                    url = "/ece356/FinancialServlet";
+                    url = "FinancialServlet";
                     break;
                 default:
                     //throw error

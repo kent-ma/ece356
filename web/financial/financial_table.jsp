@@ -25,7 +25,7 @@
             <h1>Financial Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
             </div>            
         </div>
         
@@ -79,7 +79,7 @@
         Number of matched records: <%= visits.size() %>
         
         <!--<a href="financial/financial.jsp">Start a New Search</a>-->
-        <form method="post" action="/ece356/FinancialServlet">
+        <form method="post" action="FinancialServlet">
             <input type="hidden" name="requestType" value="5">
             <input type="submit" value="Start a New Search">
         </form>

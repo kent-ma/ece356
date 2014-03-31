@@ -11,6 +11,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <script src="/bootstrap/js/jquery-ui-timepicker-addon.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script>
+        $(function() {
+          $( ".datepicker" ).datepicker();
+        });
+        $(function() {
+          $( ".timepicker" ).timepicker();
+        });
+        </script>
     </head>
     <body>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -23,17 +36,17 @@
             <h1>Staff Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
             </div>            
         </div>
         
-        <h3>Editing Appointmnet</h3>
+        <h3>Editing Appointment</h3>
         
         <form method="post" action="StaffServlet">
         <% Appointment a = (Appointment)request.getAttribute("appointment"); %>
         <input type="hidden" name="apptId" value="<%= a.getApptId() %>">
         <input type="hidden" name="doctors" value="<%= request.getParameter("doctors") %>">
-        <input type="hidden" name="apptTime" value="<%= request.getParameter("apptTime") %>">
+        <input type="hidden" name="apptTime" value="<%= request.getParameter("apptDate") %>">
         <input type="hidden" name="requestType" value="7">
             Patient:       <input type="text" name="patient" value="<%= a.getPatientName() %>"><br>
             Doctor:        <select name="doctor"><% List<Doctor> doctors = (List<Doctor>)getServletContext().getAttribute("doctorlist"); %>
@@ -46,7 +59,7 @@
                                } %>
                             </select><br>
             Room Number:   <input type="text" name="room" value="<%= a.getRoomNumber() %>"><br>
-            Time:            <input type="text" name="time" value="<%= a.getApptDate() %>"><br>
+            Time:            <input type="text" name="date" value="<%= a.getJQApptDate() %>" class="datepicker"><input type="text" name="time" value="<%= a.getJQApptTime() %>" class="timepicker"><br>
             Type:            <input type="text" name="type" value="<%= a.getApptType() %>"><br>
             Active (0 - no, 1 - yes): <input type="text" name="active" value="<%= a.getActive() %>"><br>
             <input type="submit" value="Submit Changes">

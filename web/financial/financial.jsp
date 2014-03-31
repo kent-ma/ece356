@@ -22,14 +22,14 @@
             <h1>Financial Department</h1>
             <span class="label label-default">Freedom is how big your wallet is</span><hr>
             <div class="well well-small">Welcome! ${name}
-            <a href="/ece356/Logout">Logout</a>
+            <a href="Logout">Logout</a>
             </div>            
         </div>
             
         <ul class="nav nav-tabs">
-            <li class="active"> <a href="/ece356/FinancialServlet?requestType=0"> Home </a></li>
-            <li><a href="/ece356/FinancialServlet?requestType=1">Access Records by Doctor ID</a></li>
-            <li><a href="/ece356/FinancialServlet?requestType=2">Access Records by Patient ID</a></li>
+            <li class="active"> <a href="FinancialServlet?requestType=0"> Home </a></li>
+            <li><a href="FinancialServlet?requestType=1">Access Records by Doctor ID</a></li>
+            <li><a href="FinancialServlet?requestType=2">Access Records by Patient ID</a></li>
         </ul>
              
         This is the homepage

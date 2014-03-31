@@ -122,6 +122,20 @@ public class Appointment {
         this.roomNumber = roomNumber;
     }
     
+    public String getJQApptDate()
+    {
+        if (this.apptDate == null) return null;
+        String[] dirtyDate = this.apptDate.toString().split(" ");
+        return dirtyDate[0].split("-")[1] + "/" + dirtyDate[0].split("-")[2] + "/" + dirtyDate[0].split("-")[0];
+    }
+    
+    public String getJQApptTime()
+    {
+        if (this.apptDate == null) return null;
+        String[] dirtyDate = this.apptDate.toString().split(" ");
+        return dirtyDate[1].split(":")[0] + ":" + dirtyDate[1].split(":")[1];
+    }
+    
     
     
     
