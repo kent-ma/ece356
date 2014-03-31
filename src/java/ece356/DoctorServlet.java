@@ -88,10 +88,14 @@ public class DoctorServlet extends HttpServlet {
                 }
                 
                 // Get doctor's doctor id.
+                // Should fix this in database.
                 String doctorName = "";
                 if (credentials.getName().equals("kjun")) {
                     doctorName = "Kim Jong-un";
+                } else if (credentials.getName().equals("obladen")) {
+                    doctorName = "Osama Bin Laden";
                 }
+                
                 Doctor currentDoctor = dbcon.selectDoctor("Name = "+"'"+doctorName+"'");
                 int doctorID = currentDoctor.getDoctorId();
                 
@@ -277,28 +281,30 @@ public class DoctorServlet extends HttpServlet {
         String patientID = request.getParameter("patientID");
         String docID = request.getParameter("docID");
         
-        String value = docID + "," + patientID;
+        String value = "'"+docID+"'" + "," + "'"+patientID+"'";
         String access = "granting access";
         try {
-                    //probably have to do a check for the access right?
+            //probably have to do a check for the access right?yes
+            boolean docPatRelationNotExists = dbcon.checkExists("DoctorPatient", "*", "DoctorID = "+"'"+docID+"'"+" AND "+"PatientID = "+"'"+patientID+"'");
+            
+            if (!docPatRelationNotExists) {
                 boolean grantSuccess = dbcon.insertRows("DoctorPatient", "DoctorID, PatientID", value); 
-                    if(grantSuccess == true)
-                    {
-                        access = "access granted!";
-                        //sucessfully granted!
-                    }
-                    else
-                    {   
-                        //didn't grant
-                        access = "request deny!";
-                    }
-                  
+                if(grantSuccess == true)
+                {
+                    access = "access granted!";
+                    //sucessfully granted!
+                } else {   
+                    //didn't grant
+                    access = "request deny!";
+                }
+            }
+                    
+             request.setAttribute("access", access);
+             getServletContext().getRequestDispatcher("/doctor/doctor.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("exception", e);
-            
+            getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
         }
-        request.setAttribute("access", access);
-        getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
     }
     
 

@@ -246,6 +246,12 @@ public class DatabaseConnection
         return stmt.execute(sql);
     }
     
+    public boolean checkExists(String t, String v, String c) throws SQLException
+    {
+        String sql = "SELECT EXISTS(SELECT "+v+" FROM "+t+" WHERE "+c+")";
+        return stmt.execute(sql);
+    }
+    
     public void close() throws SQLException
     {
         con.close();
